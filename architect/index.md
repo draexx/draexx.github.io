@@ -75,6 +75,7 @@ end
 1.  Item two
 1.  Item three
 1.  Item four
+1.  Item five
 
 ### And a nested list:
 
@@ -84,7 +85,6 @@ end
     - level 3 item
     - level 3 item
 - level 1 item
-  - level 2 item
   - level 2 item
   - level 2 item
 - level 1 item
