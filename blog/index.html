@@ -4,25 +4,20 @@ title: Draexx's Blog
 ---
 {% assign months = "enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|octubre|noviembre|diciembre" | split: "|" %}
 <section id="blogs">
-    {% for category in site.categories %}
-            {% assign cat = 'blog'  %}
-            {% if cat == category[0] %}
-                {% for post in category[1] %}
-                    {% assign m = post.date | date: "%-m" | minus: 1 %}
-                    {% assign day = post.date | date: "%d" %}
-                    {% assign month = months[m] %}
-                    {% assign year = post.date | date: "%Y" %}
-                    <article class="post">
-                       <h1><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h1>
-                       <p class="author">
-                            Publicado por <span class="author"><a href="{{ post.authorweb }}">{{ post.author }}</a></span> | <span class="date">{{day}} de {{month}} del {{year}}</span> | 
-                       </p>
-                       <div class="entry">
-                            {{ post.excerpt }}
-                       </div>
-                       <a class="button" style="font-size: 12px;" href="{{ site.baseurl }}{{ post.url }}"><span class="fas fa-hand-point-right"></span>&nbsp;Sigue leyendo</a>
-                    </article>
-                {% endfor %}
-            {% endif %}
-        {% endfor %}
+    {% for post in site.categories['blog'] %}
+        {% assign m = post.date | date: "%-m" | minus: 1 %}
+        {% assign day = post.date | date: "%d" %}
+        {% assign month = months[m] %}
+        {% assign year = post.date | date: "%Y" %}
+        <article class="post">
+            <h1><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h1>
+            <p class="author">
+                Publicado por <span class="author"><a href="{{ post.authorweb }}">{{ post.author }}</a></span> | <span class="date">{{day}} de {{month}} del {{year}}</span> | 
+            </p>
+            <div class="entry">
+                {{ post.excerpt }}
+            </div>
+            <a class="button" style="font-size: 12px;" href="{{ site.baseurl }}{{ post.url }}"><span class="fas fa-hand-point-right"></span>&nbsp;Sigue leyendo</a>
+        </article>
+    {% endfor %}
 </section>
