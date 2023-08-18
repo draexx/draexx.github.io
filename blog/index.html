@@ -5,7 +5,7 @@ title: Blog
 {% assign months = "enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|octubre|noviembre|diciembre" | split: "|" %}
 <section id="blogs">
     {% for category in site.categories %}
-            {% assign cat = 'recetas'  %}
+            {% assign cat = 'blog'  %}
             {% if cat == category[0] %}
                 {% for post in category[1] %}
                     {% assign m = post.date | date: "%-m" | minus: 1 %}
