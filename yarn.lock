@@ -2369,7 +2369,7 @@ gulp-sass@^4.0.2:
   dependencies:
     chalk "^2.3.0"
     lodash.clonedeep "^4.3.2"
-    node-sass "^4.8.3"
+    node-sass "^7.0.0"
     plugin-error "^1.0.1"
     replace-ext "^1.0.0"
     strip-ansi "^4.0.0"
@@ -3562,8 +3562,8 @@ node-gyp@^3.8.0:
     tar "^2.0.0"
     which "1"
 
-node-sass@^4.8.3:
-  version "4.11.0"
+node-sass@^7.0.0:
+  version "7.0.0"
   resolved "https://registry.yarnpkg.com/node-sass/-/node-sass-4.11.0.tgz#183faec398e9cbe93ba43362e2768ca988a6369a"
   integrity sha512-bHUdHTphgQJZaF1LASx0kAviPH7sGlcyNhWade4eVIpFp6tsn7SV8xNMTbsQFpEV9VXpnwTTnNYlfsZXgGgmkA==
   dependencies:
