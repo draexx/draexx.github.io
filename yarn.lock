@@ -481,7 +481,7 @@ bin-version-check@^4.0.0:
   integrity sha512-sR631OrhC+1f8Cvs8WyVWOA33Y8tgwjETNPyyD/myRBXLkfS/vl74FmH/lFcRl9KY3zwGh7jFhvyk9vV3/3ilQ==
   dependencies:
     bin-version "^3.0.0"
-    semver "^5.6.0"
+    semver "^5.7.2"
     semver-truncate "^1.1.2"
 
 bin-version@^3.0.0:
@@ -1109,7 +1109,7 @@ cross-spawn@^6.0.0:
   dependencies:
     nice-try "^1.0.4"
     path-key "^2.0.1"
-    semver "^5.5.0"
+    semver "^5.7.2"
     shebang-command "^1.2.0"
     which "^1.2.9"
 
@@ -3558,7 +3558,7 @@ node-gyp@^3.8.0:
     osenv "0"
     request "^2.87.0"
     rimraf "2"
-    semver "~5.3.0"
+    semver "~5.7.2"
     tar "^6.2.1"
     which "1"
 
