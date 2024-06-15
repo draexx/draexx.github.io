@@ -538,8 +538,8 @@ brace-expansion@^1.1.7:
     balanced-match "^1.0.0"
     concat-map "0.0.1"
 
-braces@^2.3.0, braces@^2.3.1:
-  version "2.3.2"
+braces@^3.0.3, braces@^3.0.3:
+  version "3.0.3"
   resolved "https://registry.yarnpkg.com/braces/-/braces-2.3.2.tgz#5979fd3f14cd531565e5fa2df1abfff1dfaee729"
   integrity sha512-aNdbnj9P8PjdXU4ybaWLK2IF3jc/EoDYbC7AazW6to3TRsfXxscC9UXOB5iDiEQrkyIbWp2SLQda4+QAa7nc3w==
   dependencies:
@@ -554,7 +554,7 @@ braces@^2.3.0, braces@^2.3.1:
     split-string "^3.0.2"
     to-regex "^3.0.1"
 
-braces@^3.0.3, braces@~3.0.2:
+braces@^3.0.3, braces@~3.0.3:
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/braces/-/braces-3.0.3.tgz#490332f40919452272d55a8480adc0c441358789"
   integrity sha512-yQbXgO/OSZVD2IsiLlro+7Hf6Q18EJrKSEsdoMzKePKXct3gvD8oLcOQdIzGupr5Fj+EDe8gO/lxc1BzfMpxvA==
@@ -792,7 +792,7 @@ chokidar@^2.0.0:
   dependencies:
     anymatch "^2.0.0"
     async-each "^1.0.0"
-    braces "^2.3.0"
+    braces "^3.0.3"
     glob-parent "^5.1.2"
     inherits "^2.0.1"
     is-binary-path "^1.0.0"
@@ -811,7 +811,7 @@ chokidar@^3.5.1:
   integrity sha512-7VT13fmjotKpGipCW9JEQAusEPE+Ei8nl6/g4FBAmIm0GOOLMua9NDDo/DWp0ZAxCr3cPq5ZpBqmPAQgDda2Pw==
   dependencies:
     anymatch "~3.1.2"
-    braces "~3.0.2"
+    braces "~3.0.3"
     glob-parent "~5.1.2"
     is-binary-path "~2.1.0"
     is-glob "~4.0.1"
@@ -3332,7 +3332,7 @@ micromatch@^3.0.4, micromatch@^3.1.10, micromatch@^3.1.4:
   dependencies:
     arr-diff "^4.0.0"
     array-unique "^0.3.2"
-    braces "^2.3.1"
+    braces "^3.0.3"
     define-property "^2.0.2"
     extend-shallow "^3.0.2"
     extglob "^2.0.4"
