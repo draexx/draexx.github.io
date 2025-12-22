@@ -1,0 +1,75 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: var(--font-body);
+  }
+  
+  body {
+    font-family: var(--font-body);
+  }
+
+  h1, h2 {
+    font-family: var(--font-display);
+  }
+
+  h3, h4, h5, h6 {
+    font-family: var(--font-body);
+  }
+
+  code, pre {
+    font-family: var(--font-code);
+  }
+}
+
+/* === PALETA BITS A BOTS === */
+:root {
+  --font-display: 'Orbitron', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-code: 'Fira Code', monospace;
+
+  /* Principales */
+  --color-bits: #2a99c9;
+  --color-bots: #e9691e;
+  --color-navy: #0e3146;
+
+  /* Fondos */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8f9fa;
+  --bg-dark: #0a1e2b;
+
+  /* Textos */
+  --text-primary: #0e3146;
+  --text-secondary: #6c757d;
+  --text-muted: #adb5bd;
+
+  /* Bordes */
+  --border-light: #e9ecef;
+  --border-normal: #dee2e6;
+
+  /* Estados hover */
+  --bits-hover: #5bb3db;
+  --bots-hover: #f18b4a;
+  --navy-hover: #1a4d6b;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  .gradient-bg {
+    background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+  }
+  
+  .hover-lift {
+    transition: all 0.3s ease;
+  }
+  
+  .hover-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  }
+}

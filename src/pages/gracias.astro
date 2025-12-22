@@ -1,0 +1,56 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Transmisión Recibida | Pedro Carranza">
+  <section class="min-h-screen bg-[#0a1e2b] flex items-center justify-center px-6 overflow-hidden relative">
+    
+    <div class="absolute inset-0 opacity-[0.03] pointer-events-none" 
+         style="background-image: radial-gradient(#2a99c9 1px, transparent 1px); background-size: 40px 40px;">
+    </div>
+
+    <div class="absolute w-[500px] h-[500px] border border-[#2a99c9]/10 rounded-full animate-pulse"></div>
+    <div class="absolute w-[800px] h-[800px] border border-[#2a99c9]/5 rounded-full"></div>
+
+    <div class="max-w-xl w-full bg-[#0e3146]/40 backdrop-blur-xl border border-white/10 p-8 md:p-12 rounded-3xl text-center relative z-10 shadow-2xl">
+      
+      <div class="w-20 h-20 bg-[#2a99c9]/10 border border-[#2a99c9]/30 rounded-full flex items-center justify-center mx-auto mb-8 relative">
+        <svg class="w-10 h-10 text-[#2a99c9]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+        </svg>
+        <span class="absolute -top-1 -right-1 flex h-4 w-4">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#e9691e] opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-4 w-4 bg-[#e9691e]"></span>
+        </span>
+      </div>
+
+      <span class="font-['Fira+Code'] text-[#2a99c9] text-[10px] tracking-[0.4em] uppercase mb-4 block">Status: 200_OK / Received</span>
+      
+      <h1 class="font-['Orbitron'] text-3xl md:text-4xl text-white font-black mb-6 uppercase tracking-tight">
+        TRANSMISIÓN <span class="text-[#e9691e]">RECIBIDA</span>
+      </h1>
+      
+      <div class="space-y-4 mb-10">
+        <p class="text-slate-400 font-['Inter'] leading-relaxed">
+          Tus requerimientos han sido inyectados en mi sistema de análisis. Revisaré el stack y los desafíos planteados personalmente.
+        </p>
+        <p class="font-['Fira+Code'] text-[11px] text-[#2a99c9] uppercase tracking-widest bg-white/5 py-2 rounded-lg">
+          ETA_RESPUESTA: &lt; 24 HORAS
+        </p>
+      </div>
+
+      <div class="flex flex-col gap-4">
+        <a href="/" class="w-full py-4 bg-white/5 border border-white/10 text-white font-['Orbitron'] text-[10px] font-bold tracking-[0.2em] rounded-xl hover:bg-white/10 transition-all uppercase">
+          Volver al Dashboard (Home)
+        </a>
+        <a href="/blog" class="w-full py-4 text-slate-500 font-['Fira+Code'] text-[10px] hover:text-[#e9691e] transition-colors uppercase tracking-[0.2em]">
+          Leer últimas lecciones en /Blog
+        </a>
+      </div>
+    </div>
+
+    <div class="absolute bottom-10 left-10 hidden md:block opacity-20">
+      <p class="font-['Fira+Code'] text-[9px] text-white uppercase tracking-[0.5em]">System_Location: 19.0333° S, 65.2627° W</p>
+    </div>
+  </section>
+</Layout>

@@ -1,0 +1,401 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+
+const projects = [
+  {
+    title: "Robótica Educativa",
+    description: "Proyectos de robótica educativa diseñados para enseñar conceptos STEM a estudiantes de todas las edades. Desarrollo talleres y kits educativos que combinan hardware asequible con programación intuitiva.",
+    tags: ["STEM", "Hardware", "Arduino"],
+    image: "/api/placeholder/400/250",
+    link: "#"
+  },
+  {
+    title: "TTC - Thesis Track & Compare",
+    description: "Sistema avanzado de análisis comparativo para tesis académicas. Plataforma que utiliza IA para identificar patrones, tendencias y gaps en investigación científica, ayudando a académicos a posicionar sus trabajos de manera estratégica.",
+    tags: ["TTC", "SaaS", "Educacion"],
+    image: "/api/placeholder/400/250",
+    link: "#"
+  }
+];
+
+const aiGeneratedImages = [
+  "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400&h=250&fit=crop",
+  "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=250&fit=crop",
+  "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=400&h=250&fit=crop"
+];
+
+import { getCollection } from 'astro:content';
+
+// Traemos todos los posts y los ordenamos por fecha (el más reciente primero)
+const posts = (await getCollection('blog')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+// Tomamos solo los últimos 3 para el feed del Index
+const latestInsights = posts.slice(0, 3);
+---
+
+<Layout title="Pedro Carranza - Software Strategist" description="Transformación de sistemas legacy con IA y tecnologías modernas.">
+
+  <Hero />
+    <section class="py-10 bg-white relative">
+    <div class="max-w-4xl mx-auto px-6 -mt-24 relative z-20">
+        <div class="bg-white rounded-3xl p-10 shadow-[0_30px_60px_rgba(10,30,43,0.12)] border border-slate-100 overflow-hidden relative">
+        
+    <div class="absolute top-0 right-0 w-[55%] h-full opacity-[0.07] pointer-events-none z-0">
+    <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+        <pattern id="grid-pattern" width="100" height="100" patternUnits="userSpaceOnUse">
+            <path d="M0 50 L50 0 M50 100 L100 50 M25 25 L75 75" stroke="#2a99c9" stroke-width="0.5" fill="none" />
+            <path d="M0 0 L100 100 M100 0 L0 100" stroke="#0e3146" stroke-width="0.2" fill="none" opacity="0.5" />
+            
+            <circle cx="50" cy="50" r="1.5" fill="#e9691e" />
+            <circle cx="0" cy="0" r="1" fill="#2a99c9" />
+            <circle cx="100" cy="100" r="1" fill="#2a99c9" />
+        </pattern>
+
+        <mask id="fade-mask">
+            <rect width="100%" height="100%" fill="url(#fade-grad)" />
+            <linearGradient id="fade-grad" x1="1" y1="0" x2="0" y2="0">
+            <stop offset="0%" stop-color="white" stop-opacity="1" />
+            <stop offset="80%" stop-color="white" stop-opacity="0" />
+            </linearGradient>
+        </mask>
+        </defs>
+
+        <rect width="100%" height="100%" fill="url(#grid-pattern)" mask="url(#fade-mask)" />
+    </svg>
+    </div>
+
+        <div class="flex flex-col md:flex-row items-center gap-10 relative z-10">
+            <div class="hidden md:block w-[3px] bg-gradient-to-b from-[#2a99c9] via-[#e9691e] to-transparent self-stretch rounded-full"></div>
+            
+            <div class="flex-1">
+            <div class="inline-flex items-center gap-2 text-[#2a99c9] font-['Orbitron'] text-[10px] tracking-[0.4em] mb-6 uppercase font-bold">
+                <span class="relative flex h-2 w-2">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#e9691e] opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2 w-2 bg-[#e9691e]"></span>
+                </span>
+                Engineering Authority
+            </div>
+            
+            <h2 class="font-['Orbitron'] text-2xl md:text-4xl text-[#0e3146] mb-6 leading-tight tracking-tight">
+                Ingeniero de Sistemas <br/> 
+                <span class="text-slate-400 font-light italic text-xl md:text-2xl">& Docente Universitario</span>
+            </h2>
+            
+            <p class="font-['Inter'] text-slate-600 text-lg leading-relaxed mb-8">
+                Más de una década combinando el <span class="font-bold text-[#0e3146]">desarrollo de software de misión crítica</span> con la formación de nuevas generaciones. Mi enfoque une la <span class="font-bold text-[#0e3146]">robustez del código</span> con la estrategia de negocio.
+            </p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="group flex items-center gap-4 p-4 bg-slate-50 rounded-2xl border border-slate-100 hover:bg-white hover:border-[#2a99c9]/30 transition-all">
+                <div class="text-[#2a99c9] font-bold">01</div>
+                <span class="font-['Inter'] text-sm font-medium text-slate-700 uppercase tracking-wider">Maestría en IA & Data Science</span>
+                </div>
+                <div class="group flex items-center gap-4 p-4 bg-slate-50 rounded-2xl border border-slate-100 hover:bg-white hover:border-[#e9691e]/30 transition-all">
+                <div class="text-[#e9691e] font-bold">02</div>
+                <span class="font-['Inter'] text-sm font-medium text-slate-700 uppercase tracking-wider">Líder de Software Libre</span>
+                </div>
+            </div>
+            </div>
+        </div>
+        </div>
+    </div>
+    </section>
+
+    <section id="expertise" class="py-24 bg-[#0e3146] relative overflow-hidden">
+    
+    <div class="absolute inset-0 opacity-[0.03] pointer-events-none" 
+        style="background-image: radial-gradient(#2a99c9 1px, transparent 1px); background-size: 30px 30px;">
+    </div>
+
+    <div class="container mx-auto px-6 relative z-10">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-4">
+        <div>
+            <h2 class="font-['Orbitron'] text-3xl md:text-5xl text-white mb-4">
+            MY <span class="text-[#2a99c9]">EXPERTISE</span>
+            </h2>
+            <p class="text-slate-400 font-['Inter'] max-w-xl">
+            Soluciones de ingeniería diseñadas para cerrar la brecha entre la infraestructura robusta y la inteligencia artificial avanzada.
+            </p>
+        </div>
+        <div class="text-[#e9691e] font-['Orbitron'] text-xs tracking-[0.3em] hidden md:block border-b border-[#e9691e]/30 pb-2">
+            ESTRATEGIA & EJECUCIÓN
+        </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <div class="group relative p-8 rounded-xl border border-white/5 bg-white/[0.02] hover:border-[#2a99c9]/50 transition-all duration-500 overflow-hidden">
+            <div class="absolute -right-4 -bottom-4 text-8xl font-black text-white/[0.02] group-hover:text-[#2a99c9]/5 transition-all">01</div>
+            
+            <div class="w-12 h-12 rounded-lg bg-[#2a99c9]/10 flex items-center justify-center mb-8 border border-[#2a99c9]/20">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-[#2a99c9]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+            </svg>
+            </div>
+            
+            <h3 class="font-['Orbitron'] text-lg text-white mb-4 uppercase tracking-wider">Legacy Modernization</h3>
+            <p class="text-slate-400 text-sm leading-relaxed mb-6 font-['Inter']">
+            Migración y refactorización de sistemas críticos. Convertimos la deuda técnica en activos digitales escalables y seguros.
+            </p>
+            <div class="flex flex-wrap gap-2">
+            <span class="px-2 py-1 text-[9px] font-['Orbitron'] border border-[#2a99c9]/30 text-[#2a99c9] rounded">Cloud Native</span>
+            <span class="px-2 py-1 text-[9px] font-['Orbitron'] border border-[#2a99c9]/30 text-[#2a99c9] rounded">Microservices</span>
+            </div>
+        </div>
+
+        <div class="group relative p-8 rounded-xl border border-[#e9691e]/40 bg-[#e9691e]/5 hover:bg-[#e9691e]/10 transition-all duration-500 shadow-[0_0_30px_rgba(233,105,30,0.05)]">
+            <div class="absolute -right-4 -bottom-4 text-8xl font-black text-white/[0.02] group-hover:text-[#e9691e]/5 transition-all">02</div>
+            
+            <div class="w-12 h-12 rounded-lg bg-[#e9691e]/10 flex items-center justify-center mb-8 border border-[#e9691e]/20">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-[#e9691e]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+            </div>
+            
+            <h3 class="font-['Orbitron'] text-lg text-white mb-4 uppercase tracking-wider">AI & Automation</h3>
+            <p class="text-slate-400 text-sm leading-relaxed mb-6 font-['Inter']">
+            Integración de LLMs y Agentes de IA en procesos operativos. Automatización real con enfoque en ROI y eficiencia.
+            </p>
+            <div class="flex flex-wrap gap-2">
+            <span class="px-2 py-1 text-[9px] font-['Orbitron'] border border-[#e9691e]/30 text-[#e9691e] rounded font-bold">RAG Systems</span>
+            <span class="px-2 py-1 text-[9px] font-['Orbitron'] border border-[#e9691e]/30 text-[#e9691e] rounded font-bold">LLM Ops</span>
+            </div>
+        </div>
+
+        <div class="group relative p-8 rounded-xl border border-white/5 bg-white/[0.02] hover:border-[#2a99c9]/50 transition-all duration-500">
+            <div class="absolute -right-4 -bottom-4 text-8xl font-black text-white/[0.02] group-hover:text-[#2a99c9]/5 transition-all">03</div>
+            
+            <div class="w-12 h-12 rounded-lg bg-[#2a99c9]/10 flex items-center justify-center mb-8 border border-[#2a99c9]/20">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-[#2a99c9]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            </div>
+            
+            <h3 class="font-['Orbitron'] text-lg text-white mb-4 uppercase tracking-wider">Systems Architecture</h3>
+            <p class="text-slate-400 text-sm leading-relaxed mb-6 font-['Inter']">
+            Diseño de infraestructuras distribuidas y arquitecturas de datos de alto rendimiento para el mundo moderno.
+            </p>
+            <div class="flex flex-wrap gap-2">
+            <span class="px-2 py-1 text-[9px] font-['Orbitron'] border border-[#2a99c9]/30 text-[#2a99c9] rounded">High Availability</span>
+            <span class="px-2 py-1 text-[9px] font-['Orbitron'] border border-[#2a99c9]/30 text-[#2a99c9] rounded">Scalability</span>
+            </div>
+        </div>
+
+        </div>
+    </div>
+    </section>
+
+<section class="py-24 bg-white relative overflow-hidden">
+  <div class="container mx-auto px-6 relative z-10">
+    <div class="flex flex-col lg:flex-row items-center gap-16">
+      
+      <div class="lg:w-1/2">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[#e9691e]/20 bg-[#e9691e]/5 mb-6">
+          <span class="font-['Orbitron'] text-[10px] tracking-widest text-[#e9691e] uppercase">Metodología de Integración</span>
+        </div>
+        
+        <h2 class="font-['Orbitron'] text-3xl md:text-5xl text-[#0e3146] mb-8 leading-tight">
+          CONECTANDO <br/> EL <span class="text-[#2a99c9]">LEGACY</span> CON LA <span class="text-[#e9691e]">IA</span>
+        </h2>
+        
+        <div class="space-y-6 text-slate-600 font-['Inter'] leading-relaxed">
+          <p>
+            No se trata solo de implementar un Chatbot. Mi enfoque se centra en crear un <strong>puente tecnológico</strong> donde tus sistemas actuales alimentan modelos de inteligencia avanzada.
+          </p>
+          
+          <div class="flex gap-4">
+            <div class="flex-shrink-0 w-1 bg-[#2a99c9] rounded-full"></div>
+            <p class="italic text-sm">
+              "La verdadera transformación ocurre cuando la IA deja de ser un experimento y se convierte en una capa de ejecución en tu arquitectura central."
+            </p>
+          </div>
+
+          <p>
+            Mediante el uso de arquitecturas <strong>RAG (Retrieval-Augmented Generation)</strong> y orquestación de agentes, permito que el conocimiento atrapado en tus "Bits" antiguos cobre vida a través de "Bots" autónomos.
+          </p>
+        </div>
+
+        <div class="mt-10">
+          <a href="/contacto" class="inline-flex items-center gap-3 text-[#0e3146] font-['Orbitron'] font-bold text-sm hover:text-[#e9691e] transition-colors group">
+            DISCUTIR TU CASO DE USO
+            <span class="group-hover:translate-x-2 transition-transform">→</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="lg:w-1/2 relative">
+        <div class="bg-[#0e3146] rounded-3xl p-8 shadow-2xl relative overflow-hidden group">
+          <svg viewBox="0 0 400 300" class="w-full h-auto relative z-10">
+            <rect x="50" y="220" width="100" height="40" rx="4" fill="#2a99c9" opacity="0.8" />
+            <text x="100" y="245" font-family="Orbitron" font-size="10" fill="white" text-anchor="middle">DATOS BITS</text>
+            
+            <path d="M150 240 Q200 240 200 150" stroke="#2a99c9" fill="none" stroke-dasharray="4" class="animate-[dash_2s_linear_infinite]" />
+            
+            <circle cx="200" cy="150" r="40" fill="none" stroke="#e9691e" stroke-width="2" />
+            <circle cx="200" cy="150" r="30" fill="#e9691e" opacity="0.2">
+                <animate attributeName="r" values="30;35;30" dur="3s" repeatCount="indefinite" />
+            </circle>
+            <text x="200" y="155" font-family="Orbitron" font-size="12" fill="#e9691e" text-anchor="middle" font-weight="bold">IA CORE</text>
+            
+            <rect x="250" y="40" width="100" height="40" rx="4" fill="#e9691e" />
+            <text x="300" y="65" font-family="Orbitron" font-size="10" fill="white" text-anchor="middle">BOT AGENTE</text>
+            
+            <path d="M200 110 Q200 60 250 60" stroke="#e9691e" fill="none" stroke-dasharray="4" />
+          </svg>
+          
+          <div class="absolute top-4 right-4 font-['Orbitron'] text-[8px] text-white/20 tracking-[0.5em] uppercase">
+            Neural Bridge v1.0
+          </div>
+        </div>
+        
+        <div class="absolute -bottom-6 -left-6 bg-white shadow-xl p-4 rounded-xl border border-slate-100 hidden md:block animate-bounce-slow">
+            <div class="flex items-center gap-3">
+                <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                <span class="font-['Orbitron'] text-[10px] text-slate-600">SISTEMAS CONECTADOS</span>
+            </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="insights" class="py-20 bg-white">
+  <div class="container mx-auto px-6">
+    <div class="inline-block border-l-4 border-[#e9691e] pl-4 mb-12">
+      <h2 class="font-['Orbitron'] text-3xl text-[#0e3146]">INSIGHTS</h2>
+      <p class="text-slate-500 font-['Inter'] text-sm uppercase tracking-[0.3em]">De Bits a Bots: El Blog</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+        {latestInsights.map((post) => (
+            <article class="group cursor-pointer">
+            <a href={`/blog/${post.slug}/`}>
+                <div class="overflow-hidden rounded-xl mb-4 bg-slate-100 aspect-video relative">
+                {post.data.heroImage ? (
+                    <img src={post.data.heroImage} alt="" class="object-cover w-full h-full group-hover:scale-105 transition-transform" />
+                ) : (
+                    <div class="absolute inset-0 opacity-10 group-hover:scale-110 transition-transform duration-500" 
+                        style="background-image: url('data:image/svg+xml,...');"></div>
+                )}
+                </div>
+                <h4 class="font-['Orbitron'] text-[#0e3146] group-hover:text-[#2a99c9] transition-colors mb-2">
+                {post.data.title}
+                </h4>
+                <p class="text-slate-600 text-xs font-['Inter'] leading-relaxed">
+                {post.data.description}
+                </p>
+            </a>
+            </article>
+        ))}
+    </div>
+  </div>
+</section>
+
+<section id="lab" class="py-24 bg-[#f1f5f9]/50 relative overflow-hidden">
+  <div class="absolute inset-0 opacity-[0.4] pointer-events-none" 
+      style="background-image: radial-gradient(#cbd5e1 1px, transparent 1px); background-size: 24px 24px;">
+  </div>
+
+  <div class="max-w-6xl mx-auto px-6 relative z-10">
+    <div class="mb-12 flex items-center justify-between">
+      <div>
+        <h2 class="font-['Orbitron'] text-3xl font-bold text-[#0e3146] uppercase">The <span class="text-[#2a99c9]">Lab</span></h2>
+        <div class="w-12 h-1 bg-[#e9691e] mt-2"></div>
+      </div>
+      <span class="font-['Orbitron'] text-[10px] text-slate-400 tracking-[0.3em] uppercase hidden md:block">Selected Repositories</span>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-8">
+      {projects.map(p => (
+        <div class="p-8 bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group">
+          <h3 class="font-['Orbitron'] text-xl font-bold text-[#0e3146] mb-4 uppercase group-hover:text-[#2a99c9]">{p.title}</h3>
+          <p class="font-['Inter'] text-sm text-slate-600 mb-6">{p.description}</p>
+
+          <div class="flex flex-wrap gap-2 mb-8">
+            {p.tags.map(t => <span class="px-2 py-1 bg-[#0e3146]/5 text-[9px] font-bold text-[#0e3146] rounded border border-slate-100 uppercase">{t}</span>)}
+          </div>
+
+          <a href={p.link} class="inline-flex items-center text-[#e9691e] font-['Orbitron'] text-[10px] font-bold tracking-widest uppercase hover:gap-3 transition-all">
+            Explorar Proyecto <span class="ml-2">→</span>
+          </a>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="py-24 bg-white relative">
+  <div class="max-w-4xl mx-auto px-6">
+    <div class="bg-[#0e3146] rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row">
+
+      <div class="p-10 md:w-2/5 bg-[#0e3146] border-r border-white/5">
+        <h2 class="font-['Orbitron'] text-2xl text-white mb-6 uppercase tracking-tighter">Direct<span class="text-[#e9691e]">Line</span></h2>
+        <p class="text-[9px] font-['Fira+Code'] text-slate-500 uppercase mb-2">
+          <span class="text-green-500">●</span> System_Status: Ready_to_Process
+        </p>
+        <p class="text-slate-400 text-sm font-['Inter'] mb-10 leading-relaxed">
+          ¿Tienes un sistema legacy que modernizar o una estrategia de IA que ejecutar? Hablemos.
+        </p>
+
+        <ul class="space-y-6">
+          <li class="flex items-center gap-4 group">
+            <div class="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center group-hover:bg-[#2a99c9]/20 transition-colors">
+              <svg class="w-5 h-5 text-[#2a99c9]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+            </div>
+            <span class="text-xs font-['Orbitron'] text-white">contacto@pedrocarranza.com</span>
+          </li>
+          <li class="flex items-center gap-4 group">
+            <div class="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center group-hover:bg-[#e9691e]/20 transition-colors">
+              <svg class="w-5 h-5 text-[#e9691e]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            </div>
+            <span class="text-xs font-['Orbitron'] text-white">LinkedIn / @pedrocarranza</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="p-10 md:w-3/5 bg-[#0a1e2b]">
+        
+        <form action="https://formspree.io/f/xpqajdgj" 
+  method="POST" class="space-y-4">
+          <div>
+            <label class="block font-['Orbitron'] text-[10px] text-[#2a99c9] mb-2 uppercase tracking-widest">_Nombre_Completo</label>
+            <input type="text" name="name" class="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white font-['Inter'] text-sm focus:border-[#2a99c9] outline-none transition-all" placeholder="Escribe aquí..." />
+          </div>
+          <div>
+            <label class="block font-['Orbitron'] text-[10px] text-[#2a99c9] mb-2 uppercase tracking-widest">_Email_Corporativo</label>
+            <input type="email" name="email" class="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white font-['Inter'] text-sm focus:border-[#2a99c9] outline-none transition-all" />
+          </div>
+          <div>
+            <label class="block font-['Orbitron'] text-[10px] text-[#2a99c9] mb-2 uppercase tracking-widest">_Mensaje_Brief</label>
+            <textarea rows="4" name="message" class="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white font-['Inter'] text-sm focus:border-[#2a99c9] outline-none transition-all"></textarea>
+          </div>
+          <input type="hidden" name="_next" value="https://pedrocarranza.com/gracias" />
+          <input type="hidden" name="_subject" value="Nuevo contacto desde Direct_Line (Home)" />
+          <button type="submit" class="w-full bg-[#e9691e] py-4 rounded-xl font-['Orbitron'] text-xs font-bold text-white uppercase tracking-[0.2em] hover:bg-[#d8581a] transition-all shadow-lg shadow-[#e9691e]/20">
+            Transmitir Mensaje
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  @keyframes dash {
+    to {
+      stroke-dashoffset: -20;
+    }
+  }
+  .animate-bounce-slow {
+    animation: bounce 6s infinite;
+  }
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+  }
+</style>
+</Layout>

@@ -1,0 +1,57 @@
+---
+// src/components/Hero.astro
+---
+
+<section class="relative min-h-[90vh] flex items-center justify-center py-20 overflow-hidden bg-[#0e3146]">
+
+  <div class="absolute inset-0 opacity-10 pointer-events-none" 
+    style="background-image: radial-gradient(#fff 1px, transparent 1px); background-size: 40px 40px;">
+  </div>
+
+  <div class="absolute top-0 left-0 w-full h-full opacity-20 pointer-events-none">
+    <div class="absolute top-1/4 -left-20 w-[500px] h-[500px] bg-[#2a99c9] rounded-full blur-[140px]"></div>
+    <div class="absolute bottom-1/4 -right-20 w-[500px] h-[500px] bg-[#e9691e] rounded-full blur-[140px]"></div>
+  </div>
+
+  <div class="container mx-auto px-6 relative z-10 text-center">
+
+    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 mb-8">
+      <span class="w-2 h-2 bg-[#e9691e] rounded-full animate-pulse"></span>
+      <span class="font-['Orbitron'] text-[10px] tracking-[0.3em] text-slate-300 uppercase">Modernización & IA</span>
+    </div>
+
+    <h1 class="font-['Orbitron'] text-5xl md:text-7xl lg:text-8xl font-black text-white mb-6 leading-[0.9] tracking-tighter">
+      DE <span class="text-[#2a99c9]">BITS</span> <br class="md:hidden" /> A <span class="text-[#e9691e]">BOTS</span>
+    </h1>
+
+    <p class="font-['Inter'] text-lg md:text-2xl text-slate-300 max-w-2xl mx-auto mb-12 font-light leading-relaxed text-balance">
+      Estrategia y arquitectura para transformar <span class="text-white font-medium">sistemas legacy</span> en ecosistemas inteligentes de alta disponibilidad.
+    </p>
+
+    <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
+      <a href="/contacto" 
+        class="group relative bg-[#e9691e] hover:bg-[#d15a1a] text-white font-['Orbitron'] text-xs font-bold tracking-widest px-10 py-5 rounded-sm transition-all shadow-[0_0_20px_rgba(233,105,30,0.3)] overflow-hidden hover:scale-105">
+        <span class="relative z-10">CONSULTORÍA ESTRATÉGICA</span>
+        <div class="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform"></div>
+      </a>
+
+      <a href="/blog"
+        class="group flex items-center gap-3 font-['Orbitron'] text-xs font-bold tracking-widest text-white/70 hover:text-[#2a99c9] transition-all">
+        <span class="w-8 h-[1px] bg-[#2a99c9]/50 group-hover:w-12 transition-all"></span>
+        EXPLORAR EL BLOG
+      </a>
+    </div>
+  </div>
+
+  <div class="absolute bottom-10 left-10 hidden lg:block">
+    <span class="font-['Orbitron'] text-[8px] text-white/20 vertical-text tracking-[0.5em] uppercase">
+      Systems Architecture / AI Integration
+    </span>
+  </div>
+</section>
+
+<style>
+  .vertical-text {
+    writing-mode: vertical-rl;
+  }
+</style>

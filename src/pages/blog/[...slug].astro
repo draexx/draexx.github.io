@@ -1,0 +1,77 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Newsletter from '../../components/Newsletter.astro';
+
+export async function getStaticPaths() {
+  const blogEntries = await getCollection('blog');
+  return blogEntries.map(entry => ({
+    params: { slug: entry.slug }, 
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+
+// Formateador de fecha local
+const formattedDate = entry.data.pubDate.toLocaleDateString('es-ES', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<Layout title={`${entry.data.title} | Pedro Carranza`}>
+  <article class="bg-[#0a1e2b] min-h-screen pb-24 text-white">
+    <header class="relative py-24 border-b border-white/10 overflow-hidden">
+      <div class="absolute inset-0 opacity-[0.03] pointer-events-none" 
+           style="background-image: radial-gradient(#2a99c9 1px, transparent 1px); background-size: 40px 40px;">
+      </div>
+
+      <div class="max-w-3xl mx-auto px-6 relative z-10 text-center">
+        <div class="flex justify-center gap-2 mb-6">
+          {entry.data.tags?.map(tag => (
+            <span class="font-['Fira+Code'] text-[#2a99c9] text-[9px] border border-[#2a99c9]/30 px-2 py-1 rounded uppercase tracking-widest">
+              {tag}
+            </span>
+          ))}
+        </div>
+
+        <h1 class="font-['Orbitron'] text-3xl md:text-5xl font-black mb-6 leading-tight uppercase text-balance">
+          {entry.data.title}
+        </h1>
+        
+        <div class="flex items-center justify-center gap-4 text-slate-400 font-['Inter'] text-sm">
+           <time datetime={entry.data.pubDate.toISOString()}>
+             {formattedDate}
+           </time>
+           {entry.data.updatedDate && (
+             <span class="text-[10px] text-slate-500 italic">(Actualizado: {entry.data.updatedDate.toLocaleDateString()})</span>
+           )}
+        </div>
+      </div>
+    </header>
+
+    {entry.data.heroImage && (
+      <div class="max-w-4xl mx-auto px-6 -mt-10 mb-16 relative z-20">
+        <img src={entry.data.heroImage} alt={entry.data.title} class="w-full h-auto rounded-2xl shadow-2xl border border-white/10" />
+      </div>
+    )}
+
+    <div class="max-w-2xl mx-auto px-6 py-10 prose prose-invert prose-slate lg:prose-lg">
+       <Content />
+        <Newsletter tipo="blog" />
+    </div>
+  </article>
+ 
+</Layout>
+
+<style is:global>
+  /* Mantenemos tu estética técnica en el contenido */
+  .prose h2 { font-family: 'Orbitron', sans-serif; color: #2a99c9 !important; text-transform: uppercase; margin-top: 2.5em !important; }
+  .prose p { font-family: 'Inter', sans-serif; line-height: 1.8; color: #cbd5e1; margin-bottom: 1.5em; }
+  .prose a { color: #e9691e; text-decoration: none; border-bottom: 1px solid transparent; transition: border 0.3s; }
+  .prose a:hover { border-bottom-color: #e9691e; }
+  .prose code { font-family: 'Fira Code', monospace; background: #0e3146; padding: 0.2em 0.4em; border-radius: 4px; color: #2a99c9 !important; }
+</style>

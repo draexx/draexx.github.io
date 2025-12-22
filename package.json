@@ -1,21 +1,21 @@
 {
-  "name": "particle",
+  "name": "draexx.github.io",
+  "type": "module",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Personal website built with Astro and Tailwind CSS",
   "scripts": {
-    "dev": "gulp"
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
   },
-  "author": "Nathan Randecker",
-  "license": "ISC",
   "dependencies": {
-    "browser-sync": "^2.26.3",
-    "gulp": "^4.0.0",
-    "gulp-concat": "^2.6.1",
-    "gulp-csso": "^3.0.1",
-    "gulp-imagemin": "^5.0.3",
-    "gulp-plumber": "^1.2.1",
-    "gulp-sass": "^4.0.2",
-    "gulp-uglify": "^3.0.1"
+    "@astrojs/sitemap": "^3.6.0",
+    "astro": "^4.0.0"
+  },
+  "devDependencies": {
+    "@astrojs/tailwind": "^5.0.0",
+    "tailwindcss": "^3.3.0"
   }
 }

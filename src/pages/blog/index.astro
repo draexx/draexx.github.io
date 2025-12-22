@@ -1,0 +1,83 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Newsletter from '../../components/Newsletter.astro';
+
+// Obtener y ordenar posts
+let posts = [];
+try {
+  const allPosts = await getCollection('blog');
+  posts = allPosts.sort(
+    (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+  );
+} catch (e) {
+  console.error("Error cargando colección:", e);
+}
+
+const pageTitle = "De Bits A Bots | Pedro Carranza";
+---
+
+<Layout title={pageTitle}>
+  <section class="bg-[#0a1e2b] min-h-screen pt-32 pb-20 px-6">
+    <div class="max-w-4xl mx-auto">
+      
+      <header class="mb-20">
+        <div class="flex items-center gap-3 mb-6">
+          <span class="h-[1px] w-12 bg-[#2a99c9]"></span>
+          <span class="font-['Fira+Code'] text-[#2a99c9] text-[10px] uppercase tracking-[0.4em]">Insights & Deployments</span>
+        </div>
+        
+        <h1 class="font-['Orbitron'] text-5xl md:text-7xl font-black text-white leading-none uppercase">
+          DE <span class="text-[#e9691e]">BITS</span> A <span class="text-[#2a99c9]">BOTS</span>
+        </h1>
+        
+        <p class="mt-8 text-xl md:text-2xl text-slate-300 font-['Inter'] font-light max-w-2xl leading-relaxed border-l-2 border-[#e9691e]/30 pl-6">
+          Software, datos y automatización para la <span class="text-white font-semibold">vida real.</span>
+        </p>
+      </header>
+
+      <div class="grid gap-8">
+        {posts.length > 0 ? (
+          posts.map((post) => (
+            <article class="group relative">
+              <a href={`/blog/${post.slug}`} class="block p-8 bg-[#0e3146]/20 border border-white/5 rounded-2xl hover:bg-[#0e3146]/40 hover:border-[#2a99c9]/30 transition-all duration-500">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                  
+                  <div class="space-y-4">
+                    <div class="flex items-center gap-4">
+                      <time class="font-['Fira+Code'] text-[10px] text-slate-500 uppercase">
+                        {post.data.pubDate.toLocaleDateString('es-ES', { month: 'short', day: '2-digit', year: 'numeric' })}
+                      </time>
+                      <span class="w-1 h-1 bg-slate-700 rounded-full"></span>
+                      <span class="text-[9px] text-[#2a99c9] font-['Orbitron'] tracking-widest uppercase">
+                        {post.data.tags?.[0] || 'Core'}
+                      </span>
+                    </div>
+                    
+                    <h2 class="text-2xl font-['Orbitron'] text-white group-hover:text-[#2a99c9] transition-colors leading-tight">
+                      {post.data.title}
+                    </h2>
+                    
+                    <p class="text-slate-400 text-sm font-['Inter'] line-clamp-2 max-w-xl leading-relaxed">
+                      {post.data.description}
+                    </p>
+                  </div>
+
+                  <div class="flex items-center text-[#e9691e] font-['Orbitron'] text-[10px] font-bold tracking-widest group-hover:translate-x-2 transition-transform">
+                    ACCEDER <span class="ml-2 text-lg">→</span>
+                  </div>
+                </div>
+              </a>
+            </article>
+          ))
+        ) : (
+          <div class="py-20 text-center border border-dashed border-white/10 rounded-3xl">
+            <p class="font-['Fira+Code'] text-slate-500 text-sm tracking-widest uppercase">System_Empty: Esperando primer despliegue...</p>
+          </div>
+        )}
+      </div>
+      <Newsletter tipo="blog" />
+    </div>
+  </section>
+
+</Layout>

@@ -1,0 +1,181 @@
+---
+import Layout from '../layouts/Layout.astro';
+const pageTitle = "Sobre Mí - Pedro Carranza | Software Strategist";
+const pageDescription = "Conoce la mente detrás de la estrategia. Más de una década transformando sistemas legacy en arquitecturas modernas.";
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+
+<section class="min-h-screen bg-[#0e3146] text-white relative overflow-hidden py-24">
+  <div class="absolute inset-0 opacity-[0.03] pointer-events-none" 
+       style="background-image: radial-gradient(#2a99c9 1px, transparent 1px); background-size: 30px 30px;">
+  </div>
+
+  <div class="container mx-auto px-6 relative z-10">
+    <div class="max-w-6xl mx-auto">
+      
+      <div class="text-center mb-20">
+        <span class="font-['Orbitron'] text-[#2a99c9] text-[10px] tracking-[0.5em] uppercase mb-4 block">System_Core / Bio</span>
+        <h1 class="font-['Orbitron'] text-5xl md:text-7xl font-bold mb-6 tracking-tight text-white uppercase">
+          SOBRE <span class="text-[#2a99c9]">MÍ</span>
+        </h1>
+        <div class="w-32 h-1 bg-gradient-to-r from-[#2a99c9] to-[#e9691e] mx-auto rounded-full"></div>
+      </div>
+      
+      <div class="grid lg:grid-cols-12 gap-16 items-start">
+        
+        <div class="lg:col-span-5 lg:sticky lg:top-24">
+          <div class="relative group">
+            <div class="absolute -inset-1 bg-gradient-to-r from-[#2a99c9] to-[#e9691e] rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-1000"></div>
+            
+            <div class="relative w-full aspect-square bg-[#0a1e2b] rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
+              <img
+                src="/images/pedro-profile.png" 
+                alt="Pedro Carranza"
+                class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
+              />
+              <div class="absolute top-4 left-4 opacity-40">
+                <img src="/pc-monogram-white.svg" alt="" class="w-12 h-12" />
+              </div>
+            </div>
+          </div>
+          
+          <div class="grid grid-cols-2 gap-4 mt-8">
+            <div class="p-4 bg-white/5 rounded-xl border border-white/5">
+              <div class="text-[#2a99c9] font-['Orbitron'] text-2xl font-bold">+10</div>
+              <div class="text-[9px] text-slate-400 uppercase tracking-widest mt-1">Años de Exp.</div>
+            </div>
+            <div class="p-4 bg-white/5 rounded-xl border border-white/5">
+              <div class="text-[#e9691e] font-['Orbitron'] text-2xl font-bold">Muchos</div>
+              <div class="text-[9px] text-slate-400 uppercase tracking-widest mt-1">Estudiantes</div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="lg:col-span-7 space-y-12">
+          
+          <section>
+            <h2 class="font-['Orbitron'] text-sm font-bold mb-6 text-[#2a99c9] tracking-[0.3em] uppercase">
+              La Mente Detrás de la Estrategia
+            </h2>
+            <p class="text-2xl md:text-3xl leading-snug text-white font-light italic border-l-4 border-[#e9691e] pl-8 py-2">
+              "No creo en la tecnología por la tecnología misma, sino como el motor que escala un negocio."
+            </p>
+          </section>
+          
+          <div class="space-y-6 text-lg text-slate-300 font-['Inter'] leading-relaxed">
+            <div class="mt-4 flex items-center gap-2 text-[10px] font-['Fira+Code'] text-slate-500 uppercase">
+              <span class="relative flex h-2 w-2">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+              </span>
+              SUCRE_BO: {new Date().toLocaleTimeString('es-BO', { hour: '2-digit', minute: '2-digit', timeZone: 'America/La_Paz' })} AST
+            </div>
+            <p>
+              Desde Sucre, Bolivia, he navegado todas las capas del desarrollo de software. Mi carrera no se limita a escribir código; se trata de <strong>diseñar arquitecturas que sobrevivan al tiempo</strong>.
+            </p>
+            <p>
+              He liderado proyectos críticos en sectores de pagos y sistemas transaccionales, donde la precisión no es opcional. Esa misma rigurosidad es la que llevo a la academia como docente universitario, formando a quienes construirán el futuro digital.
+            </p>
+          </div>
+
+          <div class="grid gap-6">
+            <div class="bg-white/[0.03] p-6 rounded-2xl border border-white/5 hover:bg-white/[0.05] transition-all group">
+              <h4 class="text-[10px] font-['Orbitron'] text-[#2a99c9] mb-3 tracking-[0.4em] uppercase">Evolución de Sistemas</h4>
+              <p class="text-white font-bold mb-2">Modernización de Cero a Uno</p>
+              <p class="text-slate-400 text-sm">Transformo el código legacy en APIs modernas y escalables sin interrumpir tu flujo de caja.</p>
+            </div>
+
+            <div class="bg-white/[0.03] p-6 rounded-2xl border border-white/5 hover:bg-white/[0.05] transition-all group">
+              <h4 class="text-[10px] font-['Orbitron'] text-[#e9691e] mb-3 tracking-[0.4em] uppercase">De Bits a Bots</h4>
+              <p class="text-white font-bold mb-2">IA con Propósito Estratégico</p>
+              <p class="text-slate-400 text-sm">Integro modelos de lenguaje y automatización para resolver ineficiencias operativas reales.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="py-24 bg-[#0a1e2b] border-t border-white/5">
+  <div class="container mx-auto px-6">
+    
+    <div class="flex flex-col md:flex-row justify-between items-center mb-16 gap-4">
+      <h3 class="font-['Orbitron'] text-2xl text-white uppercase tracking-widest">
+        Technical <span class="text-[#2a99c9]">Stack</span>
+      </h3>
+      <div class="h-px flex-1 bg-gradient-to-r from-[#2a99c9]/50 to-transparent mx-8 hidden md:block"></div>
+      <span class="text-slate-500 font-['Fira+Code'] text-xs">v2.0.25 // Stable</span>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      
+      <div class="space-y-6">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-2 h-2 bg-[#e9691e] rounded-full animate-pulse"></div>
+          <h4 class="font-['Orbitron'] text-xs text-slate-400 uppercase tracking-widest">Intelligence Layer</h4>
+        </div>
+        <div class="flex flex-wrap gap-3">
+          {['Python', 'LangChain', 'OpenAI SDK', 'RAG Architecture', 'Pandas', 'NLP'].map(skill => (
+            <span class="px-3 py-1 bg-[#e9691e]/10 border border-[#e9691e]/30 text-[#e9691e] font-['Fira+Code'] text-[10px] rounded-md">
+              {skill}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      <div class="space-y-6">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-2 h-2 bg-[#2a99c9] rounded-full"></div>
+          <h4 class="font-['Orbitron'] text-xs text-slate-400 uppercase tracking-widest">Logic Layer</h4>
+        </div>
+        <div class="flex flex-wrap gap-3">
+          {['Node.js', 'Go', 'PHP (Legacy)', 'Microservices', 'REST APIs', 'PostgreSQL'].map(skill => (
+            <span class="px-3 py-1 bg-[#2a99c9]/10 border border-[#2a99c9]/30 text-[#2a99c9] font-['Fira+Code'] text-[10px] rounded-md">
+              {skill}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      <div class="space-y-6">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-2 h-2 bg-white/40 rounded-full"></div>
+          <h4 class="font-['Orbitron'] text-xs text-slate-400 uppercase tracking-widest">Infra Layer</h4>
+        </div>
+        <div class="flex flex-wrap gap-3">
+          {['Docker', 'CI/CD', 'AWS', 'Linux Server', 'Git', 'Clean Code'].map(skill => (
+            <span class="px-3 py-1 bg-white/5 border border-white/20 text-white/70 font-['Fira+Code'] text-[10px] rounded-md">
+              {skill}
+            </span>
+          ))}
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="container mx-auto px-6">
+    <div class="mt-20 pt-10 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-8">
+    <div>
+      <h4 class="font-['Orbitron'] text-white text-lg mb-2 text-center md:text-left">¿Listo para la evolución digital?</h4>
+      <p class="text-slate-500 text-sm font-['Inter']">Hablemos sobre cómo transformar tus bits en bots inteligentes.</p>
+    </div>
+
+    <div class="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
+      <a href="/contacto" class="px-8 py-4 bg-[#e9691e] text-white font-['Orbitron'] text-[10px] font-bold tracking-[0.2em] rounded-xl hover:bg-[#d8581a] transition-all text-center shadow-lg shadow-[#e9691e]/20">
+        INICIAR PROYECTO
+      </a>
+      
+      <a href="/files/CV-Pedro-Carranza.pdf" target="_blank" rel="noopener noreferrer" download="CV-Pedro-Carranza.pdf" class="px-8 py-4 bg-white/5 border border-white/10 text-white font-['Orbitron'] text-[10px] font-bold tracking-[0.2em] rounded-xl hover:bg-white/10 transition-all flex items-center justify-center gap-3">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-[#2a99c9]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
+        DOWNLOAD_CV.PDF
+      </a>
+    </div>
+  </div>
+  </div>
+</section>
+
+</Layout>

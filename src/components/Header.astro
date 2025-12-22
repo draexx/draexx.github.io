@@ -1,0 +1,95 @@
+---
+// Header.astro corregido
+const { pathname } = Astro.url;
+const currentPath = pathname.replace(/\/$/, "");
+const isBlog = pathname.startsWith('/blog') || pathname.startsWith('/insights');
+const logoSrc = isBlog ? "/pc-monogram-gradient.svg" : "/pc-monogram-white.svg";
+---
+
+<header class="sticky top-0 z-[100] bg-[#0e3146] border-b border-white/10">
+  <div class="flex justify-between items-center py-4 px-6 container mx-auto relative z-[110] bg-[#0e3146]">
+    
+    <a href="/" class="flex items-center gap-4 group">
+      <img src={logoSrc} alt="Logo Pedro Carranza" class="h-10 md:h-12 w-auto transition-transform group-hover:scale-105" />
+      <div class="flex flex-col">
+        <span class="font-['Orbitron'] text-lg md:text-2xl font-bold leading-none tracking-wider text-white">
+          PEDRO CARRANZA
+        </span>
+        <span class="text-[9px] md:text-xs uppercase tracking-[0.2em] text-[#2a99c9] font-medium mt-1">
+          Software Strategist
+        </span>
+      </div>
+    </a>
+
+    <button id="menu-btn" class="md:hidden flex flex-col gap-1.5 p-2 focus:outline-none group">
+      <div id="line1" class="w-6 h-0.5 bg-white transition-all duration-300"></div>
+      <div id="line2" class="w-6 h-0.5 bg-[#2a99c9] transition-all duration-300"></div>
+      <div id="line3" class="w-6 h-0.5 bg-white transition-all duration-300"></div>
+    </button>
+
+    <nav class="hidden md:flex items-center gap-8">
+      <a href="/sobre-mi" class={`text-xs font-bold tracking-widest transition-colors font-['Orbitron'] ${currentPath === '/sobre-mi' ? 'text-[#e9691e]' : 'text-slate-300 hover:text-white'}`}>SOBRE MÍ</a>
+      <a href="/servicios" class={`text-xs font-bold tracking-widest transition-colors font-['Orbitron'] ${currentPath === '/servicios' ? 'text-[#e9691e]' : 'text-slate-300 hover:text-white'}`}>SERVICIOS</a>
+      <a href="/blog" class="flex items-center gap-3 bg-white/5 hover:bg-white/10 px-5 py-2.5 rounded-xl transition group border border-white/10">
+        <img src="/icon-brain.svg" alt="Blog" class="w-6 h-6 group-hover:rotate-12 transition-transform" />
+        <span class="text-[10px] font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#2a99c9] to-[#e9691e] font-['Orbitron'] tracking-widest">DE BITS A BOTS</span>
+      </a>
+      <a href="/contacto" class="text-[10px] font-bold bg-[#e9691e] text-white px-6 py-3 rounded-xl hover:bg-[#d8581a] transition shadow-lg shadow-[#e9691e]/20 font-['Orbitron'] tracking-[0.2em]">CONTACTO</a>
+    </nav>
+  </div>
+
+  <div id="mobile-menu" class="fixed inset-0 w-full h-screen bg-[#0e3146] translate-x-full transition-transform duration-500 ease-in-out md:hidden z-[100] flex flex-col items-center justify-center gap-8">
+    <div class="absolute inset-0 opacity-[0.05] pointer-events-none" style="background-image: radial-gradient(#2a99c9 1px, transparent 1px); background-size: 40px 40px;"></div>
+    
+    <nav class="flex flex-col items-center gap-10 relative z-10">
+      <a href="/sobre-mi" class="mobile-link font-['Orbitron'] text-2xl text-white tracking-[0.3em]">SOBRE MÍ</a>
+      <a href="/servicios" class="mobile-link font-['Orbitron'] text-2xl text-white tracking-[0.3em]">SERVICIOS</a>
+      <a href="/blog" class="mobile-link font-['Orbitron'] text-2xl text-[#2a99c9] tracking-[0.3em]">DE BITS A BOTS</a>
+      <a href="/contacto" class="mobile-link font-['Orbitron'] text-lg bg-[#e9691e] text-white px-12 py-5 rounded-xl tracking-[0.2em] shadow-xl shadow-orange-950/40">CONTACTO</a>
+    </nav>
+  </div>
+</header>
+
+<script>
+  function setupMenu() {
+    const btn = document.getElementById('menu-btn');
+    const menu = document.getElementById('mobile-menu');
+    const l1 = document.getElementById('line1');
+    const l2 = document.getElementById('line2');
+    const l3 = document.getElementById('line3');
+    const links = document.querySelectorAll('.mobile-link');
+
+    function toggleMenu() {
+      const isOpen = !menu?.classList.contains('translate-x-full');
+      
+      if (isOpen) {
+        // CERRAR
+        menu?.classList.add('translate-x-full');
+        l1?.classList.remove('rotate-45', 'translate-y-2');
+        l2?.classList.remove('opacity-0');
+        l3?.classList.remove('-rotate-45', '-translate-y-2');
+        document.body.style.overflow = '';
+      } else {
+        // ABRIR
+        menu?.classList.remove('translate-x-full');
+        l1?.classList.add('rotate-45', 'translate-y-2');
+        l2?.classList.add('opacity-0');
+        l3?.classList.add('-rotate-45', '-translate-y-2');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    btn?.addEventListener('click', toggleMenu);
+    
+    links.forEach(link => {
+      link.addEventListener('click', () => {
+        menu?.classList.add('translate-x-full');
+        document.body.style.overflow = '';
+      });
+    });
+  }
+
+  // Ejecutar en carga inicial y en cambios de página (Astro View Transitions)
+  setupMenu();
+  document.addEventListener('astro:after-swap', setupMenu);
+</script>
