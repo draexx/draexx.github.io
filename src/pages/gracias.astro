@@ -54,3 +54,9 @@ import Layout from '../layouts/Layout.astro';
     </div>
   </section>
 </Layout>
+<script is:inline>
+  // Espera 6 segundos y redirige al inicio
+  setTimeout(() => {
+    window.location.href = "/";
+  }, 6000);
+</script>
