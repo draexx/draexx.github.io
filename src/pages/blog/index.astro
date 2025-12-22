@@ -10,24 +10,19 @@ const allPosts = await getCollection('blog') || [];
 const posts = allPosts.sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
-
-const pageTitle = "De Bits A Bots | Pedro Carranza";
-const pageDescription = "Software, datos y automatización para la vida real.";
 ---
-<Layout title={pageTitle} description={pageDescription}>
+<Layout title="De Bits A Bots | Pedro Carranza" description="Software, datos y automatización para la vida real.">
   <section class="bg-[#0a1e2b] min-h-screen pt-32 pb-20 px-6">
     <div class="max-w-4xl mx-auto">
-      
+
       <header class="mb-20">
         <div class="flex items-center gap-3 mb-6">
           <span class="h-[1px] w-12 bg-[#2a99c9]"></span>
           <span class="font-['Fira+Code'] text-[#2a99c9] text-[10px] uppercase tracking-[0.4em]">Insights & Deployments</span>
         </div>
-        
         <h1 class="font-['Orbitron'] text-5xl md:text-7xl font-black text-white leading-none uppercase">
           DE <span class="text-[#e9691e]">BITS</span> A <span class="text-[#2a99c9]">BOTS</span>
         </h1>
-        
         <p class="mt-8 text-xl md:text-2xl text-slate-300 font-['Inter'] font-light max-w-2xl leading-relaxed border-l-2 border-[#e9691e]/30 pl-6">
           Software, datos y automatización para la <span class="text-white font-semibold">vida real.</span>
         </p>
@@ -50,11 +45,11 @@ const pageDescription = "Software, datos y automatización para la vida real.";
                         {post.data.tags?.[0] || 'Core'}
                       </span>
                     </div>
-                    
+
                     <h2 class="text-2xl font-['Orbitron'] text-white group-hover:text-[#2a99c9] transition-colors leading-tight">
                       {post.data.title}
                     </h2>
-                    
+
                     <p class="text-slate-400 text-sm font-['Inter'] line-clamp-2 max-w-xl leading-relaxed">
                       {post.data.description}
                     </p>
