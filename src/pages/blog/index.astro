@@ -3,21 +3,18 @@ import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import Newsletter from '../../components/Newsletter.astro';
 
-// Obtener y ordenar posts
-let posts = [];
-try {
-  const allPosts = await getCollection('blog');
-  posts = allPosts.sort(
-    (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-  );
-} catch (e) {
-  console.error("Error cargando colección:", e);
-}
+// 1. Obtenemos la colección (si no existe, devuelve array vacío)
+const allPosts = await getCollection('blog') || [];
+
+// 2. Ordenamos solo si hay posts, evitando errores de .valueOf()
+const posts = allPosts.sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
 
 const pageTitle = "De Bits A Bots | Pedro Carranza";
+const pageDescription = "Software, datos y automatización para la vida real.";
 ---
-
-<Layout title={pageTitle}>
+<Layout title={pageTitle} description={pageDescription}>
   <section class="bg-[#0a1e2b] min-h-screen pt-32 pb-20 px-6">
     <div class="max-w-4xl mx-auto">
       

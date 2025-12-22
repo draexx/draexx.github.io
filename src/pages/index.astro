@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
+import { getCollection } from 'astro:content';
 
 const projects = [
   {
@@ -24,8 +25,6 @@ const aiGeneratedImages = [
   "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=250&fit=crop",
   "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=400&h=250&fit=crop"
 ];
-
-import { getCollection } from 'astro:content';
 
 // Traemos todos los posts y los ordenamos por fecha (el más reciente primero)
 const posts = (await getCollection('blog')).sort(
