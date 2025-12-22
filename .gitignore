@@ -1,4 +1,25 @@
-_site
-.sass-cache
-node_modules
-.DS_STORE
+# Dependencias
+node_modules/
+
+# Carpeta de salida (Build)
+# Muy importante ignorarla para que GitHub Actions trabaje limpio
+dist/
+_site/
+
+# Caché y archivos temporales de Astro
+.astro/
+.sass-cache/
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Logs de error
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Entorno (Secretos)
+.env
+.env.production
+.env.local
