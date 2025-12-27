@@ -4,6 +4,7 @@ pubDate: 2025-12-14
 description: "Cómo construir puentes funcionales entre el código antiguo y la automatización moderna sin arriesgar la estabilidad del negocio."
 author: "Pedro Carranza"
 tags: ["Legacy", "IA", "Arquitectura"]
+heroImage: "./portada.jpg"
 ---
 
 ## Introducción: El Dilema del Código Antiguo

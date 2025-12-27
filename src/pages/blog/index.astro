@@ -2,61 +2,80 @@
 import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import Newsletter from '../../components/Newsletter.astro';
+// Importamos Image para las miniaturas locales
+import { Image } from 'astro:assets';
 
-// 1. Obtenemos la colección (si no existe, devuelve array vacío)
 const allPosts = await getCollection('blog') || [];
 
-// 2. Ordenamos solo si hay posts, evitando errores de .valueOf()
 const posts = allPosts.sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
 ---
 <Layout title="De Bits A Bots | Pedro Carranza" description="Software, datos y automatización para la vida real.">
   <section class="bg-[#0a1e2b] min-h-screen pt-32 pb-20 px-6">
-    <div class="max-w-4xl mx-auto">
-
-      <header class="mb-20">
-        <div class="flex items-center gap-3 mb-6">
-          <span class="h-[1px] w-12 bg-[#2a99c9]"></span>
-          <span class="font-['Fira+Code'] text-[#2a99c9] text-[10px] uppercase tracking-[0.4em]">Insights & Deployments</span>
+    <div class="max-w-5xl mx-auto"> <header class="mb-20 flex flex-col md:flex-row items-center gap-10">
+        <div class="relative group flex-shrink-0">
+          <div class="absolute inset-0 bg-[#2a99c9]/15 blur-2xl rounded-full"></div>
+          <div class="relative w-24 h-24 md:w-32 md:h-32 bg-[#0e3146]/60 border border-[#2a99c9]/30 rounded-2xl p-4 flex items-center justify-center shadow-xl">
+             <img src="/icon-brain.svg" alt="Logo De Bits a Bots" class="w-full h-full object-contain" />
+          </div>
         </div>
-        <h1 class="font-['Orbitron'] text-5xl md:text-7xl font-black text-white leading-none uppercase">
-          DE <span class="text-[#e9691e]">BITS</span> A <span class="text-[#2a99c9]">BOTS</span>
-        </h1>
-        <p class="mt-8 text-xl md:text-2xl text-slate-300 font-['Inter'] font-light max-w-2xl leading-relaxed border-l-2 border-[#e9691e]/30 pl-6">
-          Software, datos y automatización para la <span class="text-white font-semibold">vida real.</span>
-        </p>
+
+        <div>
+          <div class="flex items-center gap-3 mb-6">
+            <span class="h-[1px] w-12 bg-[#2a99c9]"></span>
+            <span class="font-['Fira+Code'] text-[#2a99c9] text-[10px] uppercase tracking-[0.4em]">Insights & Deployments</span>
+          </div>
+          <h1 class="font-['Orbitron'] text-5xl md:text-7xl font-black text-white leading-none uppercase">
+            DE <span class="text-[#e9691e]">BITS</span> A <span class="text-[#2a99c9]">BOTS</span>
+          </h1>
+          <p class="mt-8 text-xl text-slate-300 font-['Inter'] font-light max-w-2xl leading-relaxed border-l-2 border-[#e9691e]/30 pl-6">
+            Software, datos y automatización para la <span class="text-white font-semibold">vida real.</span>
+          </p>
+        </div>
       </header>
 
       <div class="grid gap-8">
         {posts.length > 0 ? (
           posts.map((post) => (
             <article class="group relative">
-              <a href={`/blog/${post.slug}`} class="block p-8 bg-[#0e3146]/20 border border-white/5 rounded-2xl hover:bg-[#0e3146]/40 hover:border-[#2a99c9]/30 transition-all duration-500">
-                <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+              <a href={`/blog/${post.slug}`} class="block p-6 md:p-8 bg-[#0e3146]/20 border border-white/5 rounded-2xl hover:bg-[#0e3146]/40 hover:border-[#2a99c9]/30 transition-all duration-500">
+                <div class="flex flex-col md:flex-row gap-8 items-center">
                   
-                  <div class="space-y-4">
+                  {post.data.heroImage && (
+                    <div class="w-full md:w-56 h-36 flex-shrink-0 overflow-hidden rounded-xl border border-white/10">
+                      <Image 
+                        src={post.data.heroImage} 
+                        alt={post.data.title} 
+                        width={400} 
+                        height={250} 
+                        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" 
+                      />
+                    </div>
+                  )}
+
+                  <div class="space-y-4 flex-1">
                     <div class="flex items-center gap-4">
                       <time class="font-['Fira+Code'] text-[10px] text-slate-500 uppercase">
                         {post.data.pubDate.toLocaleDateString('es-ES', { month: 'short', day: '2-digit', year: 'numeric' })}
                       </time>
                       <span class="w-1 h-1 bg-slate-700 rounded-full"></span>
-                      <span class="text-[9px] text-[#2a99c9] font-['Orbitron'] tracking-widest uppercase">
+                      <span class="text-[9px] text-[#2a99c9] font-['Orbitron'] tracking-widest uppercase border border-[#2a99c9]/30 px-2 py-0.5 rounded">
                         {post.data.tags?.[0] || 'Core'}
                       </span>
                     </div>
 
-                    <h2 class="text-2xl font-['Orbitron'] text-white group-hover:text-[#2a99c9] transition-colors leading-tight">
+                    <h2 class="text-2xl md:text-3xl font-['Orbitron'] text-white group-hover:text-[#2a99c9] transition-colors leading-tight">
                       {post.data.title}
                     </h2>
 
-                    <p class="text-slate-400 text-sm font-['Inter'] line-clamp-2 max-w-xl leading-relaxed">
+                    <p class="text-slate-400 text-sm font-['Inter'] line-clamp-2 leading-relaxed">
                       {post.data.description}
                     </p>
-                  </div>
 
-                  <div class="flex items-center text-[#e9691e] font-['Orbitron'] text-[10px] font-bold tracking-widest group-hover:translate-x-2 transition-transform">
-                    ACCEDER <span class="ml-2 text-lg">→</span>
+                    <div class="flex items-center text-[#e9691e] font-['Orbitron'] text-[10px] font-bold tracking-widest group-hover:translate-x-2 transition-transform md:hidden lg:flex">
+                      INICIAR PROTOCOLO <span class="ml-2 text-lg">→</span>
+                    </div>
                   </div>
                 </div>
               </a>
@@ -68,8 +87,10 @@ const posts = allPosts.sort(
           </div>
         )}
       </div>
-      <Newsletter tipo="blog" />
+      
+      <div class="mt-24">
+        <Newsletter tipo="blog" />
+      </div>
     </div>
   </section>
-
 </Layout>

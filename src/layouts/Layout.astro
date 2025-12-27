@@ -5,9 +5,12 @@ import Footer from '../components/Footer.astro';
 import { ViewTransitions } from 'astro:transitions'; // Importación nativa de Astro
 
 const { 
-  title = 'Pedro Carranza | Software, Datos y Automatización', 
-  description = 'Especialista en transformación de sistemas legacy e integración de IA.' 
+  title = 'Pedro Carranza | Software, Datos y Automatización',
+  description = 'Especialista en transformación de sistemas legacy e integración de IA.',
+  image = 'og-default.png',
 } = Astro.props;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const socialImageURL = new URL(image, Astro.url);
 ---
 
 <!DOCTYPE html>
@@ -19,7 +22,17 @@ const {
     <meta name="description" content={description}>
 
     <link rel="icon" type="image/svg+xml" href="/icon-brain.svg">
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={Astro.url} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={socialImageURL} />
 
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={Astro.url} />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={socialImageURL} />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
