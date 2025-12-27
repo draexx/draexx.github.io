@@ -360,11 +360,20 @@ const latestInsights = posts.slice(0, 3);
             </p>
 
             <ul class="space-y-6">
-              <li class="flex items-center gap-4 group">
+              <li class="flex items-center gap-4 group cursor-pointer" id="contact-email-trigger">
                 <div class="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center group-hover:bg-[#2a99c9]/20 transition-colors">
-                  <svg class="w-5 h-5 text-[#2a99c9]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                  <svg class="w-5 h-5 text-[#2a99c9]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                  </svg>
                 </div>
-                <span class="text-xs font-['Orbitron'] text-white">contacto@pedrocarranza.com</span>
+                <div class="flex flex-col">
+                  <span id="contact-email-text" class="text-xs font-['Orbitron'] text-white group-hover:text-[#2a99c9] transition-colors">
+                    Cargando_Enlace...
+                  </span>
+                  <span id="contact-email-status" class="text-[8px] font-['Fira+Code'] text-[#e9691e] opacity-0 transition-opacity uppercase">
+                    Copiado al portapapeles
+                  </span>
+                </div>
               </li>
               <li class="flex items-center gap-4 group">
                 <div class="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center group-hover:bg-[#e9691e]/20 transition-colors">
@@ -455,4 +464,27 @@ const latestInsights = posts.slice(0, 3);
       btn.innerText = "REINTENTAR TRANSMISIÓN";
     }
   });
+
+  (function() {
+    const user = "contacto";
+    const domain = "pedrocarranza.com";
+    const email = `${user}@${domain}`;
+    
+    const trigger = document.getElementById('contact-email-trigger');
+    const text = document.getElementById('contact-email-text');
+    const status = document.getElementById('contact-email-status');
+
+    // Inyectar el email de forma segura
+    if (text) text.innerText = email;
+
+    // Acción de copiar al hacer clic
+    trigger?.addEventListener('click', () => {
+      navigator.clipboard.writeText(email).then(() => {
+        status.style.opacity = "1";
+        setTimeout(() => {
+          status.style.opacity = "0";
+        }, 2000);
+      });
+    });
+  })();
 </script>

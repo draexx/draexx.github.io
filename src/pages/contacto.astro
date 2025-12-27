@@ -35,15 +35,26 @@ const pageDescription = 'Inicia la modernización de tu infraestructura crítica
           </div>
 
           <div class="space-y-4">
-            <a href="mailto:contacto@pedrocarranza.com" class="group flex items-center gap-6 p-6 bg-white rounded-2xl border border-slate-200 hover:border-[#2a99c9] transition-all shadow-sm">
+            <div 
+              id="endpoint-email-card"
+              class="group flex items-center gap-6 p-6 bg-white rounded-2xl border border-slate-200 hover:border-[#2a99c9] transition-all shadow-sm cursor-pointer relative overflow-hidden"
+            >
               <div class="w-12 h-12 rounded-xl bg-slate-50 flex items-center justify-center group-hover:bg-[#2a99c9]/10 transition-colors">
-                <svg class="w-5 h-5 text-[#2a99c9]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                <svg class="w-5 h-5 text-[#2a99c9]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                </svg>
               </div>
               <div>
                 <span class="block font-['Orbitron'] text-[10px] text-slate-400 uppercase tracking-widest">Email_Endpoint</span>
-                <span class="text-[#0e3146] font-semibold">contacto@pedrocarranza.com</span>
+                <span id="endpoint-email-text" class="text-[#0e3146] font-semibold transition-colors group-hover:text-[#2a99c9]">
+                  Cargando_Direccion...
+                </span>
               </div>
-            </a>
+              
+              <div id="endpoint-copy-notif" class="absolute right-4 bottom-2 text-[8px] font-['Fira+Code'] text-[#e9691e] opacity-0 transition-opacity uppercase">
+                Copiado_OK
+              </div>
+            </div>
 
             <a href="https://linkedin.com/in/tu-perfil" target="_blank" class="group flex items-center gap-6 p-6 bg-white rounded-2xl border border-slate-200 hover:border-[#0e3146] transition-all shadow-sm">
               <div class="w-12 h-12 rounded-xl bg-slate-50 flex items-center justify-center group-hover:bg-[#0e3146]/10 transition-colors">
@@ -141,4 +152,29 @@ const pageDescription = 'Inicia la modernización de tu infraestructura crítica
       btn.innerText = "REINTENTAR TRANSMISIÓN";
     }
   });
+  (function() {
+    const u = "contacto";
+    const d = "pedrocarranza.com";
+    const full = u + "@" + d;
+    
+    const card = document.getElementById('endpoint-email-card');
+    const text = document.getElementById('endpoint-email-text');
+    const notif = document.getElementById('endpoint-copy-notif');
+
+    if (text) text.innerText = full;
+
+    card?.addEventListener('click', () => {
+      // 1. Copiamos al portapapeles
+      navigator.clipboard.writeText(full);
+      
+      // 2. Intentamos abrir el gestor de correo (opcional, pero ayuda a la UX)
+      window.location.href = "mailto:" + full;
+
+      // 3. Feedback visual
+      if (notif) {
+        notif.style.opacity = "1";
+        setTimeout(() => { notif.style.opacity = "0"; }, 2000);
+      }
+    });
+  })();
 </script>

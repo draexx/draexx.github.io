@@ -44,6 +44,7 @@ const logoSrc = isBlog ? "/pc-monogram-gradient.svg" : "/pc-monogram-white.svg";
               <span class="text-[8px] bg-[#e9691e]/10 text-[#e9691e] px-1 rounded animate-pulse">NEW</span>
             </a>
           </li>
+          
           <li class="pt-2">
             <a href="/files/CV-Pedro-Carranza.pdf" target="_blank" rel="noopener noreferrer" class="text-slate-300 hover:text-white flex items-center gap-2 border border-white/5 bg-white/5 px-3 py-2 rounded-lg w-fit transition-all">
               <span>GET_CV.PDF</span>
@@ -55,9 +56,10 @@ const logoSrc = isBlog ? "/pc-monogram-gradient.svg" : "/pc-monogram-white.svg";
       <div class="md:col-span-4">
         <h4 class="font-['Orbitron'] text-[10px] font-bold mb-8 text-[#e9691e] tracking-[0.3em] uppercase">System_Connect</h4>
         <div class="space-y-6">
-          <a href="mailto:contacto@pedrocarranza.com" class="font-['Fira+Code'] text-sm text-white hover:text-[#2a99c9] transition-colors block">
-            > contacto@pedrocarranza.com
-          </a>
+          <div id="email-container" class="font-['Fira+Code'] text-sm text-white transition-colors cursor-pointer group flex items-center gap-2">
+            <span id="email-text" class="group-hover:text-[#2a99c9] transition-colors">> Cargando_Protocolo...</span>
+            <span id="copy-status" class="text-[8px] text-[#e9691e] opacity-0 transition-opacity uppercase tracking-tighter">[Copiado]</span>
+          </div>
           <a href="https://wa.me/tu-numero" target="_blank" class="inline-flex items-center gap-3 bg-[#e9691e] px-6 py-4 rounded-xl font-['Orbitron'] text-[10px] font-bold tracking-widest hover:bg-[#d8581a] transition-all shadow-lg shadow-[#e9691e]/20">
             AGENDAR CONSULTA
           </a>
@@ -71,6 +73,10 @@ const logoSrc = isBlog ? "/pc-monogram-gradient.svg" : "/pc-monogram-white.svg";
           &copy; {currentYear} PC_STRATEGIST.SYS
         </p>
         <span class="hidden md:block w-1 h-1 bg-slate-800 rounded-full"></span>
+        <a href="https://www.geekeando.net" target="_blank" class="font-['Fira+Code'] text-[9px] text-slate-600 hover:text-[#e9691e] transition-colors uppercase tracking-widest">
+          Powered_by: GEEKEANDO.NET
+        </a>
+        <span class="hidden md:block w-1 h-1 bg-slate-800 rounded-full"></span>
         <p class="font-['Fira+Code'] text-[9px] text-slate-600 uppercase tracking-widest">
           LOC: 19.0333° S, 65.2627° W // SUCRE_BO
         </p>
@@ -83,3 +89,32 @@ const logoSrc = isBlog ? "/pc-monogram-gradient.svg" : "/pc-monogram-white.svg";
     </div>
   </div>
 </footer>
+<script is:inline>
+  // Datos fragmentados para que los bots no los unan fácilmente
+  const user = "contacto";
+  const domain = "pedrocarranza.com";
+  const fullEmail = `${user}@${domain}`;
+
+  const container = document.getElementById('email-container');
+  const textElem = document.getElementById('email-text');
+  const statusElem = document.getElementById('copy-status');
+
+  // 1. Inyectamos el email al cargar
+  if (textElem) {
+    textElem.innerText = `> ${fullEmail}`;
+  }
+
+  // 2. Función de copiado al portapapeles
+  container.addEventListener('click', () => {
+    navigator.clipboard.writeText(fullEmail).then(() => {
+      // Efecto visual de copiado
+      statusElem.classList.replace('opacity-0', 'opacity-100');
+      textElem.classList.add('text-[#2a99c9]');
+      
+      setTimeout(() => {
+        statusElem.classList.replace('opacity-100', 'opacity-0');
+        textElem.classList.remove('text-[#2a99c9]');
+      }, 2000);
+    });
+  });
+</script>
