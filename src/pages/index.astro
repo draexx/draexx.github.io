@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Hero from '../components/Hero.astro';
+import Hero from '@components/Hero.astro';
+import Timeline from '@/components/Timeline.astro';
 import { getCollection } from 'astro:content';
 
 const projects = [
@@ -83,10 +84,12 @@ const latestInsights = posts.slice(0, 3);
                 Ingeniero de Sistemas <br/> 
                 <span class="text-slate-400 font-light italic text-xl md:text-2xl">& Docente Universitario</span>
             </h2>
-            
             <p class="font-['Inter'] text-slate-600 text-lg leading-relaxed mb-8">
-                Más de una década combinando el <span class="font-bold text-[#0e3146]">desarrollo de software de misión crítica</span> con la formación de nuevas generaciones. Mi enfoque une la <span class="font-bold text-[#0e3146]">robustez del código</span> con la estrategia de negocio.
+                Más de <span class="font-bold text-[#0e3146]">dos décadas de evolución constante</span>: desde la reingeniería de sistemas en los 2000 hasta la integración de <span class="font-bold text-[#0e3146]">IA de misión crítica</span> hoy. Mi enfoque une la robustez del código legacy con la formación de nuevas generaciones.
             </p>
+            <!-- <p class="font-['Inter'] text-slate-600 text-lg leading-relaxed mb-8">
+                Más de una década combinando el <span class="font-bold text-[#0e3146]">desarrollo de software de misión crítica</span> con la formación de nuevas generaciones. Mi enfoque une la <span class="font-bold text-[#0e3146]">robustez del código</span> con la estrategia de negocio.
+            </p> -->
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div class="group flex items-center gap-4 p-4 bg-slate-50 rounded-2xl border border-slate-100 hover:bg-white hover:border-[#2a99c9]/30 transition-all">
@@ -187,7 +190,7 @@ const latestInsights = posts.slice(0, 3);
         </div>
     </div>
     </section>
-
+    <Timeline />
     <section class="py-24 bg-white relative overflow-hidden">
       <div class="container mx-auto px-6 relative z-10">
         <div class="flex flex-col lg:flex-row items-center gap-16">

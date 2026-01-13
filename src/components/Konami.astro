@@ -1,0 +1,82 @@
+---
+/* Componente: Konami Easter Egg
+  Descripción: Activa una terminal con el "Lore" de Pedro Carranza 
+  usando la paleta de colores de BitsaBots.
+*/
+---
+
+<div id="konami-terminal" class="terminal-overlay hidden">
+  <div class="terminal-content">
+    <div class="terminal-header">
+      <span class="status-dot"></span>
+      <span class="terminal-title">legacy_trace.log — 80x24</span>
+    </div>
+    <div class="terminal-body">
+      <p class="cmd-line"><span class="prompt">>></span> <span class="highlight-orange">[ ACCESS GRANTED ]</span> // USER_ID: <span class="highlight-blue">InsOpoRtaBle</span></p>
+      <p class="log">> Initializing system-dreams.blogspot.archives...</p>
+      <p class="log">> Handshake successful: elhacker.net / BoinasNegras</p>
+      <p class="log">> Loading community_node: SucreLibre / Tojpa Linux</p>
+      <p class="divider">--------------------------------------------------</p>
+      <p class="text-main">ESTADO: <span class="transgress">Transgrediendo el orden natural.</span></p>
+      <p class="text-sub">LINAJE: Stallman | I. Olea | G. Wolf | A. Herrera | A. Lopez | D. Saravia</p>
+      <p class="text-sub">NODO ACTUAL: Docente / Maker / Ingeniero @ ITGroup Systems</p>
+      <p class="divider">--------------------------------------------------</p>
+      <p class="blink">> Pulse cualquier tecla para cerrar el sistema _</p>
+    </div>
+  </div>
+</div>
+
+<style>
+  .terminal-overlay {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background: rgba(10, 10, 10, 0.98); z-index: 10000;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Fira Code', 'Courier New', monospace;
+  }
+  .hidden { display: none; }
+  .terminal-content {
+    width: 90%; max-width: 700px; background: #000;
+    border: 2px solid #2a99c9; border-radius: 8px;
+    box-shadow: 0 0 20px rgba(42, 153, 201, 0.3);
+  }
+  .terminal-header {
+    background: #1a1a1a; padding: 10px; display: flex; align-items: center;
+    border-bottom: 1px solid #333; border-radius: 6px 6px 0 0;
+  }
+  .status-dot { width: 12px; height: 12px; background: #ff5f56; border-radius: 50%; margin-right: 10px; }
+  .terminal-title { color: #888; font-size: 0.8rem; }
+  .terminal-body { padding: 25px; line-height: 1.6; }
+  .highlight-orange { color: #e9691e; font-weight: bold; }
+  .highlight-blue { color: #2a99c9; }
+  .divider { color: #444; }
+  .log { color: #666; font-size: 0.9rem; }
+  .transgress { color: #fff; font-style: italic; text-shadow: 0 0 8px rgba(255,255,255,0.5); }
+  .blink { animation: blink 1s infinite; color: #2a99c9; margin-top: 20px; }
+  @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+</style>
+
+<script>
+  const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+  let currentSelection = 0;
+  const terminal = document.getElementById('konami-terminal');
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === konamiCode[currentSelection]) {
+      currentSelection++;
+      if (currentSelection === konamiCode.length) {
+        terminal?.classList.remove('hidden');
+        currentSelection = 0;
+      }
+    } else {
+      currentSelection = 0;
+    }
+  });
+
+  // Cerrar al hacer click o presionar cualquier tecla una vez abierto
+  terminal?.addEventListener('click', () => terminal.classList.add('hidden'));
+  window.addEventListener('keydown', (e) => {
+    if (!terminal?.classList.contains('hidden') && !konamiCode.includes(e.key)) {
+       terminal?.classList.add('hidden');
+    }
+  });
+</script>

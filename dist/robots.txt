@@ -1,5 +1,0 @@
-User-agent: *
-Allow: /
-
-# El sitemap se genera automáticamente con Astro
-Sitemap: https://pedrocarranza.com/sitemap-index.xml

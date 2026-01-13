@@ -1,0 +1,172 @@
+---
+// Importamos los datos externos
+import { hitos } from '@data/hitos.js';
+---
+
+<section class="timeline-container">
+  <div class="top-gradient"></div>
+  
+  <div class="timeline-wrapper">
+    <div class="header-terminal">
+      <span class="prompt">guest@draexx:~$</span>
+      <h2 class="section-title">cat legacy_trace.log</h2>
+    </div>
+    
+    <div class="timeline-grid">
+      {hitos.map((hito) => (
+        <div class="timeline-item">
+          <div class="timeline-marker">
+            <div class={`dot ${hito.color}`}></div>
+            <div class="line"></div>
+          </div>
+          
+          <div class="timeline-content">
+            <div class="metadata">
+              <span class="year">[{hito.year}]</span>
+            </div>
+            <h3>{hito.title}</h3>
+            <p>{hito.description}</p>
+            <div class="tag-container">
+              {hito.tags.map(tag => (
+                <span class="tag">#{tag}</span>
+              ))}
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .timeline-container {
+    width: 100%;
+    position: relative;
+    background-color: #ffffff; /* Fondo blanco para coincidir con la transición */
+    padding: 6rem 0;
+    font-family: 'Fira Code', monospace;
+  }
+
+  .top-gradient {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 120px;
+    background: linear-gradient(to bottom, #0e3146, transparent);
+    pointer-events: none;
+  }
+
+  /* Este contenedor alinea el contenido con el max-width de tu Hero y Expertise */
+  .timeline-wrapper {
+    max-width: 56rem; /* Equivale a max-w-4xl (900px aprox) de tu index */
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    position: relative;
+    z-index: 10;
+  }
+
+  .header-terminal {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 3.5rem;
+  }
+
+  .prompt { color: #94a3b8; font-weight: bold; font-size: 0.9rem; }
+
+  .section-title {
+    color: #2a99c9;
+    font-size: 1.1rem;
+    margin: 0;
+    font-weight: bold;
+  }
+
+  .timeline-grid {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .timeline-item {
+    display: flex;
+    gap: 2rem;
+  }
+
+  .timeline-marker {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 20px;
+  }
+
+  .dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    z-index: 2;
+    margin-top: 6px;
+  }
+
+  .dot.blue { background: #2a99c9; box-shadow: 0 0 10px rgba(42, 153, 201, 0.3); }
+  .dot.orange { background: #e9691e; box-shadow: 0 0 10px rgba(233, 105, 30, 0.3); }
+
+  .line {
+    width: 2px;
+    flex-grow: 1;
+    background: #e2e8f0; /* Color suave para el fondo blanco */
+    margin: 4px 0;
+  }
+
+  .timeline-item:last-child .line {
+    background: linear-gradient(to bottom, #e2e8f0, transparent);
+  }
+
+  .timeline-content {
+    padding-bottom: 4rem;
+    flex: 1;
+  }
+
+  .year {
+    font-size: 0.85rem;
+    color: #64748b;
+    font-weight: bold;
+  }
+
+  h3 {
+    margin: 0.4rem 0;
+    font-size: 1.25rem;
+    color: #0e3146; /* Color oscuro para legibilidad en blanco */
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 0.5px;
+  }
+
+  p {
+    margin: 0.8rem 0;
+    color: #475569;
+    font-size: 1rem;
+    line-height: 1.6;
+    max-width: 650px;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .tag-container {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+  }
+
+  .tag {
+    font-size: 0.75rem;
+    color: #2a99c9;
+    background: #f1f5f9;
+    padding: 3px 10px;
+    border-radius: 6px;
+    border: 1px solid #e2e8f0;
+    font-weight: 500;
+  }
+
+  .timeline-item:hover .dot {
+    transform: scale(1.3);
+  }
+</style>
