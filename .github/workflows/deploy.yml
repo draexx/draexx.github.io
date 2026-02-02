@@ -1,11 +1,11 @@
-name: Deploy Astro a GitHub Pages
+name: Deploy Astro a GitHub Pages y DEV.to
 
 on:
   push:
     branches: [ master ] # O la rama que uses
 
 permissions:
-  contents: read
+  contents: write # IMPORTANTE: permite a la acción guardar el ID de DEV.to en tu MD
   pages: write
   id-token: write
 
@@ -39,3 +39,20 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+  publish-devto:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Publish to DEV.to
+        uses: sinedied/publish-devto@v2
+        with:
+          devto_key: ${{ secrets.DEVTO_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          files: 'src/content/blog/**/*.md'
+          # Esto construye la URL canónica igual que tu código de Astro
+          base_url: 'https://pedrocarranza.com' 

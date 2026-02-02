@@ -18,14 +18,17 @@ if (!entry) {
   return Astro.redirect('/404');
 }
 const { Content } = await entry.render();
-
+const { slug } = Astro.params;
+const canonicalURL = new URL(`blog/${slug}`, Astro.site); 
 const formattedDate = entry.data.pubDate.toLocaleDateString('es-ES', {
   year: 'numeric',
   month: 'long',
   day: 'numeric',
 });
 ---
-
+<head>
+  <link rel="canonical" href={canonicalURL} />
+</head>
 <Layout title={`${entry.data.title} | De Bits a Bots`} 
   description={entry.data.description}
   image={entry.data.heroImage?.src}}>
