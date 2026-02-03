@@ -55,11 +55,17 @@ jobs:
           rm -rf devto_dist
           mkdir -p devto_dist
           
+          # 1. Definimos las bases
+          # Si tu rama principal es 'main', cambia 'master' por 'main' abajo
           RAW_BASE="https://raw.githubusercontent.com/${{ github.repository }}/master/src/content/blog"
+          MY_DOMAIN="https://pedrocarranza.com"
           
           find src/content/blog -name "*.md" -type f | while read file; do
+            # Obtenemos la carpeta del post
             folder_path=$(dirname "$file")
             slug=$(basename "$folder_path")
+            
+            # Si el archivo está en la raíz (no en carpeta), usamos su nombre
             [ "$slug" == "blog" ] && slug=$(basename "$file" .md)
             
             dest_file="devto_dist/${slug}.md"
@@ -67,36 +73,39 @@ jobs:
 
             echo "--- PROCESANDO: $slug ---"
 
-            # 1. LIMPIEZA RADICAL DE LA IMAGEN
-            # Primero: Quitar comillas dobles y simples de la línea cover_image
-            sed -i '/^cover_image:/s/"//g' "$dest_file"
+            # 2. LIMPIEZA TOTAL DE COVER_IMAGE
+            # Quitamos comillas (") y (') y luego el ./ para dejar solo el nombre del archivo
+            sed -i "/^cover_image:/s/\"//g" "$dest_file"
             sed -i "/^cover_image:/s/'//g" "$dest_file"
+            sed -i "s|^cover_image: \./|cover_image: |g" "$dest_file"
             
-            # Segundo: Quitar el ./ si existe
-            sed -i 's|^cover_image: \./|cover_image: |g' "$dest_file"
-            
-            # Tercero: Inyectar la URL de GitHub (ahora que solo queda el nombre del archivo)
+            # Inyectamos la URL Raw de GitHub (Sin comillas)
             sed -i "s|^cover_image: |cover_image: ${RAW_BASE}/${slug}/|g" "$dest_file"
 
-            # 2. CANONICAL URL
-            # Aseguramos que no tenga comillas tampoco
-            sed -i "2i canonical_url: https://draexx.github.io/draexx.github.io/blog/${slug}/" "$dest_file"
+            # 3. CANONICAL URL (Tu dominio personalizado)
+            # Insertamos la URL limpia en la línea 2
+            sed -i "2i canonical_url: ${MY_DOMAIN}/blog/${slug}/" "$dest_file"
 
-            # 3. LIMPIEZA DE FRONTMATTER RESTANTE
+            # 4. LIMPIEZA DE FRONTMATTER (Astro -> Dev.to)
             sed -i '/^heroImage:/d; /^pubDate:/d; /^author:/d' "$dest_file"
             
-            # Limpiar tags de corchetes y comillas
+            # Limpiar tags (quitar corchetes y comillas)
             sed -i '/^tags:/s/\[//g; /^tags:/s/\]//g; /^tags:/s/"//g; /^tags:/s/'\''//g' "$dest_file"
             
-            # Proteger título (quitar comillas y ponerlas limpias)
+            # Título: Quitamos comillas previas y ponemos comillas dobles limpias
             sed -i '/^title:/s/"//g' "$dest_file"
             sed -i 's/^title: \(.*\)/title: "\1"/' "$dest_file"
             
-            # Forzar published: false
-            sed -i 's/^published: .*/published: false/' "$dest_file"
+            # Forzar published: false para que entren como borradores
+            if grep -q "^published:" "$dest_file"; then
+              sed -i 's/^published: .*/published: false/' "$dest_file"
+            else
+              sed -i "3i published: false" "$dest_file"
+            fi
 
-            echo "URL Final de la imagen en $slug:"
-            grep "cover_image:" "$dest_file"
+            # DEBUG para el log de la Action
+            echo "Canónica: $(grep 'canonical_url:' "$dest_file")"
+            echo "Imagen: $(grep 'cover_image:' "$dest_file")"
           done
 
       - name: Publish to DEV.to
