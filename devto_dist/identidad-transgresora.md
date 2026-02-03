@@ -1,11 +1,11 @@
 ---
-canonical_url: 'https://draexx.github.io/draexx.github.io/blog/identidad-transgresora/'
+canonical_url: 'https://pedrocarranza.com/blog/identidad-transgresora/'
 title: 'Trace de Identidad: Del bit al aula'
 description: Una reflexión sobre 25 años de trayectoria tecnológica y por qué el rumbo es la marca.
 tags: 'filosofia, trayectoria, opensource'
 cover_image: 'https://raw.githubusercontent.com/draexx/draexx.github.io/master/src/content/blog/identidad-transgresora/identidad-hacker.png'
 published: false
-id: 3223843
+id: 3223884
 ---
 
 ### // INIT_SYSTEM_LOG

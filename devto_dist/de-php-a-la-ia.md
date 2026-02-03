@@ -1,11 +1,11 @@
 ---
-canonical_url: 'https://draexx.github.io/draexx.github.io/blog/de-php-a-la-ia/'
+canonical_url: 'https://pedrocarranza.com/blog/de-php-a-la-ia/'
 title: 'De PHP a la IA: Tres Estrategias para Modernizar Sistemas Legacy Sin Morir en el Intento'
 description: Cómo construir puentes funcionales entre el código antiguo y la automatización moderna sin arriesgar la estabilidad del negocio.
 tags: 'legacy, ai, architecture'
 cover_image: 'https://raw.githubusercontent.com/draexx/draexx.github.io/master/src/content/blog/de-php-a-la-ia/portada.jpg'
 published: false
-id: 3223842
+id: 3223883
 ---
 
 ## Introducción: El Dilema del Código Antiguo

@@ -1,11 +1,11 @@
 ---
-canonical_url: 'https://draexx.github.io/draexx.github.io/blog/docker-como-blindaje/'
+canonical_url: 'https://pedrocarranza.com/blog/docker-como-blindaje/'
 title: 'Docker como blindaje: estrategias para contener y desplegar sistemas legacy sin riesgos'
 description: Cómo utilizar la contenerización para proteger y escalar sistemas antiguos sin comprometer la infraestructura moderna.
 tags: 'docker, legacy, devops, cybersecurity'
 cover_image: 'https://raw.githubusercontent.com/draexx/draexx.github.io/master/src/content/blog/docker-como-blindaje/docker-blindaje-banner.png'
 published: false
-id: 3223844
+id: 3223885
 ---
 ## El problema del "Monstruo en el Sótano"
 Muchos desarrolladores cometen el error de pensar que **Docker** es una herramienta exclusiva para arquitecturas modernas de microservicios. La realidad es que Docker es, quizás, el mejor aliado para rescatar y estabilizar **sistemas «lo viejo» (Legacy)**. Sin embargo, meter código antiguo en un contenedor sin una estrategia clara es como meter un motor averiado en una caja nueva: tarde o temprano, la caja se romperá.
