@@ -2,8 +2,12 @@
 title: "Trace de Identidad: Del bit al aula"
 description: "Una reflexión sobre 25 años de trayectoria tecnológica y por qué el rumbo es la marca."
 pubDate: 2026-01-13
-heroImage: "./identidad-hacker.png" 
+author: "Pedro Carranza"
 tags: ["Filosofía", "Trayectoria", "Software Libre"]
+heroImage: "./identidad-hacker.png" 
+# Dev.to specific fields
+cover_image: "./identidad-hacker.png"
+published: false
 ---
 
 ### // INIT_SYSTEM_LOG

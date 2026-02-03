@@ -24,6 +24,7 @@ Sitio web estático (SSG) construido con Astro y Tailwind CSS.
 ## Scripts
 
 - `npm run dev`: servidor de desarrollo
+- `npm run check`: verifica tipos (TypeScript)
 - `npm run build`: genera `dist/` (salida estática)
 - `npm run preview`: previsualiza el sitio generado
 
@@ -39,6 +40,7 @@ Las rutas se definen en `src/pages/`:
 - `/blog/[...slug]`: Detalle de post (`src/pages/blog/[...slug].astro`)
 - `/terminos`: Términos (`src/pages/terminos.astro`)
 - `/privacidad`: Privacidad (`src/pages/privacidad.astro`)
+- `/rss.xml`: RSS Feed (`src/pages/rss.xml.js`)
 - `/gracias`: Página de agradecimiento (`src/pages/gracias.astro`)
 - `404`: Página no encontrada (`src/pages/404.astro`)
 
@@ -52,6 +54,8 @@ La colección se define en `src/content/config.ts` y valida estos campos en el f
 - `updatedDate` (date, opcional)
 - `heroImage` (image, opcional)
 - `tags` (string[], opcional)
+- `cover_image` (string, opcional) - Requerido para integración con Dev.to
+- `published` (boolean, opcional) - Controla estado borrador en Dev.to
 
 ### Estructura de archivos
 
@@ -91,8 +95,10 @@ Puedes insertar imágenes dentro del contenido:
 El deploy se realiza con GitHub Actions (`.github/workflows/deploy.yml`) en cada push a `master`:
 
 - Instala dependencias
+- Ejecuta `npm run check` (Type Check)
 - Ejecuta `npm run build`
 - Publica `dist/` en GitHub Pages
+- Publica en Dev.to (si está configurado)
 
 ## Assets públicos
 

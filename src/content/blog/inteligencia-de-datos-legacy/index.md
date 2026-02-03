@@ -2,8 +2,12 @@
 title: "El Oro Oculto: Cómo Extraer Inteligencia de Datos Legacy sin Bloquear la Operación"
 pubDate: 2026-01-20
 description: "Estrategias no invasivas para transformar bases de datos antiguas en fuentes de valor para modelos de IA y analítica moderna."
+author: "Pedro Carranza"
+tags: ["Legacy Systems", "artificial-intelligence", "IA/Microservicios","AI"]
 heroImage: "./portada.png"
-tags: ["Data Intelligence", "Legacy Systems", "artificial-intelligence", "IA/Microservicios","AI"]
+# Dev.to specific fields
+cover_image: "./portada.png"
+published: false
 ---
 ## El valor silenciado
 En el mundo del software, solemos tener una obsesión por lo nuevo. Sin embargo, los sistemas antiguos que muchos desprecian no son «basura tecnológica»; son, en realidad, **minas de oro**. Contienen años de comportamiento de clientes, tendencias de mercado y registros históricos que ninguna startup recién fundada posee.

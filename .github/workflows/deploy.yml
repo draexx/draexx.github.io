@@ -22,6 +22,8 @@ jobs:
           cache: 'npm'
       - name: Install dependencies
         run: npm install
+      - name: Type Check
+        run: npm run check
       - name: Build Astro
         run: npm run build
       - name: Upload artifact

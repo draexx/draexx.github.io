@@ -2,8 +2,12 @@
 title: "Docker como blindaje: estrategias para contener y desplegar sistemas legacy sin riesgos"
 description: "Cómo utilizar la contenerización para proteger y escalar sistemas antiguos sin comprometer la infraestructura moderna."
 pubDate: 2026-01-15
-heroImage: "./docker-blindaje-banner.png" 
+author: "Pedro Carranza"
 tags: ["Docker", "Legacy", "DevOps", "Cybersecurity"]
+heroImage: "./docker-blindaje-banner.png" 
+# Dev.to specific fields
+cover_image: "./docker-blindaje-banner.png"
+published: false
 ---
 ## El problema del "Monstruo en el Sótano"
 Muchos desarrolladores cometen el error de pensar que **Docker** es una herramienta exclusiva para arquitecturas modernas de microservicios. La realidad es que Docker es, quizás, el mejor aliado para rescatar y estabilizar **sistemas «lo viejo» (Legacy)**. Sin embargo, meter código antiguo en un contenedor sin una estrategia clara es como meter un motor averiado en una caja nueva: tarde o temprano, la caja se romperá.

@@ -5,6 +5,9 @@ description: "Cómo construir puentes funcionales entre el código antiguo y la 
 author: "Pedro Carranza"
 tags: ["Legacy", "IA", "Arquitectura"]
 heroImage: "./portada.jpg"
+# Dev.to specific fields
+cover_image: "./portada.jpg"
+published: false
 ---
 
 ## Introducción: El Dilema del Código Antiguo

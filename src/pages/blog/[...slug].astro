@@ -20,6 +20,7 @@ if (!entry) {
 const { Content } = await entry.render();
 const { slug } = Astro.params;
 const canonicalURL = new URL(`blog/${slug}`, Astro.site); 
+const socialImageURL = new URL(entry.data.heroImage?.src ?? 'og-default.png', Astro.site);
 const formattedDate = entry.data.pubDate.toLocaleDateString('es-ES', {
   year: 'numeric',
   month: 'long',
@@ -28,6 +29,19 @@ const formattedDate = entry.data.pubDate.toLocaleDateString('es-ES', {
 ---
 <head>
   <link rel="canonical" href={canonicalURL} />
+  <script is:inline type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": entry.data.title,
+    "image": [socialImageURL],
+    "datePublished": entry.data.pubDate.toISOString(),
+    "dateModified": entry.data.updatedDate ? entry.data.updatedDate.toISOString() : entry.data.pubDate.toISOString(),
+    "author": [{
+        "@type": "Person",
+        "name": "Pedro Carranza",
+        "url": "https://pedrocarranza.com/sobre-mi"
+      }]
+  })} />
 </head>
 <Layout title={`${entry.data.title} | De Bits a Bots`} 
   description={entry.data.description}
