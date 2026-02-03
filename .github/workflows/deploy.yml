@@ -61,10 +61,13 @@ jobs:
               cp "$file" "$dest/"
               
               # REMOVE COVER_IMAGE FOR DEV.TO (Avoid 422 errors)
+              # FORMAT TAGS (Remove brackets and quotes for Dev.to compatibility)
               if [[ "$OSTYPE" == "darwin"* ]]; then
                 sed -i '' "/^cover_image:/d" "$dest/$(basename "$file")"
+                sed -i '' "/^tags:/s/[][\"]//g" "$dest/$(basename "$file")"
               else
                 sed -i "/^cover_image:/d" "$dest/$(basename "$file")"
+                sed -i "/^tags:/s/[][\"]//g" "$dest/$(basename "$file")"
               fi
             fi
           done
