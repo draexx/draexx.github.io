@@ -3,7 +3,7 @@ title: "De PHP a la IA: Tres Estrategias para Modernizar Sistemas Legacy Sin Mor
 pubDate: 2025-12-14
 description: "Cómo construir puentes funcionales entre el código antiguo y la automatización moderna sin arriesgar la estabilidad del negocio."
 author: "Pedro Carranza"
-tags: ["Legacy", "IA", "Arquitectura"]
+tags: ["legacy", "ai", "architecture"]
 heroImage: "./portada.jpg"
 # Dev.to specific fields
 cover_image: "./portada.jpg"

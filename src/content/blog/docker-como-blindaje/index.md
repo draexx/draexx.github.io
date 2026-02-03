@@ -3,7 +3,7 @@ title: "Docker como blindaje: estrategias para contener y desplegar sistemas leg
 description: "Cómo utilizar la contenerización para proteger y escalar sistemas antiguos sin comprometer la infraestructura moderna."
 pubDate: 2026-01-15
 author: "Pedro Carranza"
-tags: ["Docker", "Legacy", "DevOps", "Cybersecurity"]
+tags: ["docker", "legacy", "devops", "cybersecurity"]
 heroImage: "./docker-blindaje-banner.png" 
 # Dev.to specific fields
 cover_image: "./docker-blindaje-banner.png"

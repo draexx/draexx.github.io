@@ -56,6 +56,4 @@ jobs:
           devto_key: ${{ secrets.DEVTO_TOKEN }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
           files: 'src/content/blog/**/*.md'
-          # Esto construye la URL canónica igual que tu código de Astro
-          base_url: 'https://pedrocarranza.com'
           branch: 'master' # Fix: Default is 'main', but this repo uses 'master' 
