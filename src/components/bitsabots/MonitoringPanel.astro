@@ -42,7 +42,7 @@
     logContainer.prepend(logEntry);
     
     // Keep only last 10 logs
-    if (logContainer.children.length > 10) {
+    if (logContainer.children.length > 10 && logContainer.lastChild) {
       logContainer.removeChild(logContainer.lastChild);
     }
   };
