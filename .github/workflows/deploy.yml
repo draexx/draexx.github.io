@@ -53,36 +53,59 @@ jobs:
       - name: Prepare articles for DEV.to
         run: |
           mkdir -p devto_dist
-          # Copiamos manteniendo estructura
-          cp -r src/content/blog/* devto_dist/
+          # --- CONFIGURACIÓN ---
+          # Cambia esto por tu dominio real
+          BASE_URL="https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}"
+          REPO_RAW_URL="https://raw.githubusercontent.com/${{ github.repository }}/master"
           
-          find devto_dist -name "*.md" -type f | while read file; do
-            echo "Procesando $file..."
+          find src/content/blog -name "*.md" -type f | while read file; do
+            filename=$(basename "$file")
+            # slug: nombre del archivo sin .md
+            slug="${filename%.*}"
+            # rel_path: la subcarpeta si existe (ej: posts/)
+            rel_path=$(dirname "${file#src/content/blog/}")
+            [ "$rel_path" == "." ] && rel_path=""
             
-            # 1. Eliminar campos no compatibles con Dev.to
-            sed -i '/^heroImage:/d' "$file"
-            sed -i '/^cover_image:/d' "$file"
-            sed -i '/^pubDate:/d' "$file"
-            sed -i '/^author:/d' "$file"
+            dest_dir="devto_dist/${rel_path}"
+            mkdir -p "$dest_dir"
+            dest_file="${dest_dir}/${filename}"
+            cp "$file" "$dest_file"
 
-            # 2. Limpiar Tags: ["a", "b"] -> a, b
-            # Primero quitamos corchetes, luego comillas solo en esa línea
-            sed -i '/^tags:/s/\[//g' "$file"
-            sed -i '/^tags:/s/\]//g' "$file"
-            sed -i '/^tags:/s/"//g' "$file"
-            sed -i "/^tags:/s/'//g" "$file"
+            echo "Procesando canónica y metadatos para: $slug"
 
-            # 3. PROTEGER TÍTULO: Poner entre comillas para evitar error por los ":"
-            # Primero quitamos comillas existentes para no duplicar, luego envolvemos todo el valor
-            sed -i '/^title:/s/"//g' "$file"
-            sed -i 's/^title: \(.*\)/title: "\1"/' "$file"
-            
-            # 4. Forzar published: false (limpio)
-            if grep -q "^published:" "$file"; then
-              sed -i 's/^published: .*/published: false/' "$file"
+            # 1. INYECTAR CANONICAL_URL
+            # La construimos asumiendo la estructura estándar de Astro: dominio.com/blog/slug
+            # Si tu ruta es distinta, ajusta esta línea:
+            CANONICAL="${BASE_URL}/blog/${slug}/"
+            # La insertamos justo después del primer ---
+            sed -i "2i canonical_url: ${CANONICAL}" "$dest_file"
+
+            # 2. CONVERTIR RUTA DE IMAGEN (Cover Image)
+            # De ./portada.png a URL de GitHub Raw
+            if [ -n "$rel_path" ]; then
+              IMG_PATH="${REPO_RAW_URL}/src/content/blog/${rel_path}"
             else
-              # Si no existe, lo insertamos después de la primera línea (---)
-              sed -i '2i published: false' "$file"
+              IMG_PATH="${REPO_RAW_URL}/src/content/blog"
+            fi
+            sed -i "s|^cover_image: \./|cover_image: ${IMG_PATH}/|g" "$dest_file"
+            
+            # 3. LIMPIEZA Y PROTECCIÓN (Tags y Títulos)
+            sed -i '/^heroImage:/d' "$dest_file"
+            sed -i '/^pubDate:/d' "$dest_file"
+            sed -i '/^author:/d' "$dest_file"
+            
+            # Limpiar Tags: ["a", "b"] -> a, b
+            sed -i '/^tags:/s/\[//g; /^tags:/s/\]//g; /^tags:/s/"//g; /^tags:/s/'\''//g' "$dest_file"
+            
+            # Proteger Título con comillas
+            sed -i '/^title:/s/"//g' "$dest_file"
+            sed -i 's/^title: \(.*\)/title: "\1"/' "$dest_file"
+            
+            # Forzar published: false (para que entren como borrador)
+            if grep -q "^published:" "$dest_file"; then
+              sed -i 's/^published: .*/published: false/' "$dest_file"
+            else
+              sed -i "3i published: false" "$dest_file"
             fi
           done
       
