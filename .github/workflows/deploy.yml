@@ -22,6 +22,10 @@ jobs:
           cache: 'npm'
       - name: Install dependencies
         run: npm install
+      - name: Sync Images for Dev.to Support
+        run: |
+          mkdir -p public/blog-images
+          rsync -avm --include='*/' --include='*.jpg' --include='*.png' --include='*.webp' --exclude='*' src/content/blog/ public/blog-images/
       - name: Type Check
         run: npm run check
       - name: Build Astro
@@ -50,10 +54,31 @@ jobs:
         with:
           fetch-depth: 0
       
+      - name: Prepare articles for DEV.to
+        run: |
+          mkdir -p devto_dist
+          for file in src/content/blog/**/*.md; do
+            if ! grep -q "devto_sync: false" "$file"; then
+              # Preserve directory structure in temp folder
+              dest="devto_dist/$(dirname "${file#src/content/blog/}")"
+              mkdir -p "$dest"
+              cp "$file" "$dest/"
+              
+              # REWRITE IMAGE PATHS FOR DEV.TO
+              slug=$(basename $(dirname "$file"))
+              # Replace relative path with public absolute URL
+              if [[ "$OSTYPE" == "darwin"* ]]; then
+                sed -i '' "s|cover_image: \"\./\(.*\)\"|cover_image: \"https://pedrocarranza.com/blog-images/$slug/\1\"|g" "$dest/$(basename "$file")"
+              else
+                sed -i "s|cover_image: \"\./\(.*\)\"|cover_image: \"https://pedrocarranza.com/blog-images/$slug/\1\"|g" "$dest/$(basename "$file")"
+              fi
+            fi
+          done
+      
       - name: Publish to DEV.to
         uses: sinedied/publish-devto@v2
         with:
           devto_key: ${{ secrets.DEVTO_TOKEN }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          files: 'src/content/blog/**/*.md'
-          branch: 'master' # Fix: Default is 'main', but this repo uses 'master' 
+          files: 'devto_dist/**/*.md' # Use the processed files
+          branch: 'master' 
