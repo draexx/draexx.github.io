@@ -53,23 +53,23 @@ jobs:
       - name: Prepare articles for DEV.to
         run: |
           mkdir -p devto_dist
-          for file in src/content/blog/**/*.md; do
-            if ! grep -q "devto_sync: false" "$file"; then
-              # Preserve directory structure in temp folder
-              dest="devto_dist/$(dirname "${file#src/content/blog/}")"
-              mkdir -p "$dest"
-              cp "$file" "$dest/"
-              
-              # REMOVE COVER_IMAGE FOR DEV.TO (Avoid 422 errors)
-              # FORMAT TAGS (Remove brackets and quotes for Dev.to compatibility)
-              if [[ "$OSTYPE" == "darwin"* ]]; then
-                sed -i '' "/^cover_image:/d" "$dest/$(basename "$file")"
-                sed -i '' "/^tags:/s/[][\"]//g" "$dest/$(basename "$file")"
-              else
-                sed -i "/^cover_image:/d" "$dest/$(basename "$file")"
-                sed -i "/^tags:/s/[][\"]//g" "$dest/$(basename "$file")"
-              fi
-            fi
+          # Copiamos los archivos de blog
+          cp -r src/content/blog/* devto_dist/
+          
+          # Procesamos cada archivo .md
+          find devto_dist -name "*.md" -type f | while read file; do
+            # 1. Quitar los corchetes y comillas de los tags: ["a", "b"] -> a, b
+            sed -i 's/tags: \[\(.*\)\]/tags: \1/' "$file"
+            sed -i 's/"//g' "$file"
+            
+            # 2. Eliminar campos que Dev.to no entiende o que tienen rutas locales
+            sed -i '/^heroImage:/d' "$file"
+            sed -i '/^cover_image:/d' "$file"
+            sed -i '/^pubDate:/d' "$file"
+            
+            # 3. Asegurar que 'published' sea un booleano válido
+            # Nota: Si en tu MD dice "published: false y deploy...", límpialo a solo "false"
+            sed -i 's/^published: .*/published: false/' "$file"
           done
       
       - name: Publish to DEV.to
