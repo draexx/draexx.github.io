@@ -53,23 +53,37 @@ jobs:
       - name: Prepare articles for DEV.to
         run: |
           mkdir -p devto_dist
-          # Copiamos los archivos de blog
+          # Copiamos manteniendo estructura
           cp -r src/content/blog/* devto_dist/
           
-          # Procesamos cada archivo .md
           find devto_dist -name "*.md" -type f | while read file; do
-            # 1. Quitar los corchetes y comillas de los tags: ["a", "b"] -> a, b
-            sed -i 's/tags: \[\(.*\)\]/tags: \1/' "$file"
-            sed -i 's/"//g' "$file"
+            echo "Procesando $file..."
             
-            # 2. Eliminar campos que Dev.to no entiende o que tienen rutas locales
+            # 1. Eliminar campos no compatibles con Dev.to
             sed -i '/^heroImage:/d' "$file"
             sed -i '/^cover_image:/d' "$file"
             sed -i '/^pubDate:/d' "$file"
+            sed -i '/^author:/d' "$file"
+
+            # 2. Limpiar Tags: ["a", "b"] -> a, b
+            # Primero quitamos corchetes, luego comillas solo en esa línea
+            sed -i '/^tags:/s/\[//g' "$file"
+            sed -i '/^tags:/s/\]//g' "$file"
+            sed -i '/^tags:/s/"//g' "$file"
+            sed -i "/^tags:/s/'//g" "$file"
+
+            # 3. PROTEGER TÍTULO: Poner entre comillas para evitar error por los ":"
+            # Primero quitamos comillas existentes para no duplicar, luego envolvemos todo el valor
+            sed -i '/^title:/s/"//g' "$file"
+            sed -i 's/^title: \(.*\)/title: "\1"/' "$file"
             
-            # 3. Asegurar que 'published' sea un booleano válido
-            # Nota: Si en tu MD dice "published: false y deploy...", límpialo a solo "false"
-            sed -i 's/^published: .*/published: false/' "$file"
+            # 4. Forzar published: false (limpio)
+            if grep -q "^published:" "$file"; then
+              sed -i 's/^published: .*/published: false/' "$file"
+            else
+              # Si no existe, lo insertamos después de la primera línea (---)
+              sed -i '2i published: false' "$file"
+            fi
           done
       
       - name: Publish to DEV.to
@@ -77,5 +91,5 @@ jobs:
         with:
           devto_key: ${{ secrets.DEVTO_TOKEN }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          files: 'devto_dist/**/*.md' # Use the processed files
-          branch: 'master' 
+          files: 'devto_dist/**/*.md'
+          branch: 'master'
