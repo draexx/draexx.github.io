@@ -52,48 +52,49 @@ jobs:
       
       - name: Prepare articles for DEV.to
         run: |
-          # 1. Limpiar carpeta temporal si existe
           rm -rf devto_dist
           mkdir -p devto_dist
           
-          # URL base real de tus archivos en GitHub
-          REPO_RAW_URL="https://raw.githubusercontent.com/${{ github.repository }}/master"
+          REPO_RAW_URL="https://raw.githubusercontent.com/${{ github.repository }}/master/src/content/blog"
           
-          # 2. Solo procesar archivos dentro de src/content/blog
-          # Usamos -maxdepth para evitar procesar cosas raras
           find src/content/blog -name "*.md" -type f | while read file; do
-            # Extraer el slug (nombre de la carpeta o del archivo)
-            # Si es index.md, el slug es el nombre de su carpeta padre
-            rel_path=$(dirname "${file#src/content/blog/}")
+            # 1. Obtener el nombre de la carpeta (slug)
+            # Ejemplo: src/content/blog/docker-post/index.md -> docker-post
+            rel_path=$(basename $(dirname "$file"))
             filename=$(basename "$file")
             
-            if [ "$filename" == "index.md" ]; then
-                slug="$rel_path"
-            else
+            # Si el archivo está en la raíz de blog, rel_path será "blog"
+            if [ "$rel_path" == "blog" ]; then
                 slug="${filename%.*}"
+                IMG_URL="${REPO_RAW_URL}"
+            else
+                slug="$rel_path"
+                IMG_URL="${REPO_RAW_URL}/${rel_path}"
             fi
             
             dest_file="devto_dist/${slug}.md"
             cp "$file" "$dest_file"
 
-            echo "Procesando: $slug"
+            echo "Procesando $slug - URL Imagen: $IMG_URL"
 
-            # 3. FIX IMAGEN: Apuntar a la carpeta ORIGEN en el repo (src/content/blog/...)
-            # Buscamos la carpeta exacta donde vive la imagen
-            # Si rel_path no está vacío, la ruta es src/content/blog/slug/portada.png
-            FULL_IMG_URL="${REPO_RAW_URL}/src/content/blog/${rel_path}"
-            sed -i "s|^cover_image: \./|cover_image: ${FULL_IMG_URL}/|g" "$dest_file"
+            # 2. FIX IMAGEN: Reemplazo total de la ruta relativa por la absoluta de GitHub
+            # Buscamos 'cover_image: ./' y lo cambiamos por la URL de src/content/blog/...
+            sed -i "s|^cover_image: \./|cover_image: ${IMG_URL}/|g" "$dest_file"
 
-            # 4. CANONICAL URL
+            # 3. CANONICAL URL
             CANONICAL="https://draexx.github.io/blog/${slug}/"
             sed -i "2i canonical_url: ${CANONICAL}" "$dest_file"
 
-            # 5. LIMPIEZA DE FRONTMATTER
+            # 4. LIMPIEZA RESTANTE
             sed -i '/^heroImage:/d; /^pubDate:/d; /^author:/d' "$dest_file"
             sed -i '/^tags:/s/\[//g; /^tags:/s/\]//g; /^tags:/s/"//g; /^tags:/s/'\''//g' "$dest_file"
             sed -i '/^title:/s/"//g' "$dest_file"
             sed -i 's/^title: \(.*\)/title: "\1"/' "$dest_file"
             sed -i 's/^published: .*/published: false/' "$dest_file"
+            
+            # DEBUG: Ver cómo quedó la línea de la imagen
+            echo "Resultado final imagen en $dest_file:"
+            grep "cover_image:" "$dest_file"
           done
 
       - name: Publish to DEV.to
