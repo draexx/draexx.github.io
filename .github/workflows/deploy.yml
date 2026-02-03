@@ -22,10 +22,6 @@ jobs:
           cache: 'npm'
       - name: Install dependencies
         run: npm install
-      - name: Sync Images for Dev.to Support
-        run: |
-          mkdir -p public/blog-images
-          rsync -avm --include='*/' --include='*.jpg' --include='*.png' --include='*.webp' --exclude='*' src/content/blog/ public/blog-images/
       - name: Type Check
         run: npm run check
       - name: Build Astro
@@ -64,19 +60,14 @@ jobs:
               mkdir -p "$dest"
               cp "$file" "$dest/"
               
-              # REWRITE IMAGE PATHS FOR DEV.TO
-              # Replace relative cover_image with absolute URL hosted on pedrocarranza.com
-              slug=$(basename $(dirname "$file"))
+              # REMOVE COVER_IMAGE FOR DEV.TO (Avoid 422 errors)
               if [[ "$OSTYPE" == "darwin"* ]]; then
-                sed -i '' "s|cover_image: *\"\./\(.*\)\"|cover_image: \"https://pedrocarranza.com/blog-images/$slug/\1\"|g" "$dest/$(basename "$file")"
+                sed -i '' "/^cover_image:/d" "$dest/$(basename "$file")"
               else
-                sed -i "s|cover_image: *\"\./\(.*\)\"|cover_image: \"https://pedrocarranza.com/blog-images/$slug/\1\"|g" "$dest/$(basename "$file")"
+                sed -i "/^cover_image:/d" "$dest/$(basename "$file")"
               fi
             fi
           done
-      
-      - name: Wait for GitHub Pages Propagation
-        run: sleep 60
       
       - name: Publish to DEV.to
         uses: sinedied/publish-devto@v2
