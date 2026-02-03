@@ -65,15 +65,18 @@ jobs:
               cp "$file" "$dest/"
               
               # REWRITE IMAGE PATHS FOR DEV.TO
+              # Replace relative cover_image with absolute URL hosted on pedrocarranza.com
               slug=$(basename $(dirname "$file"))
-              # Replace relative path with public absolute URL
               if [[ "$OSTYPE" == "darwin"* ]]; then
-                sed -i '' "s|cover_image: \"\./\(.*\)\"|cover_image: \"https://pedrocarranza.com/blog-images/$slug/\1\"|g" "$dest/$(basename "$file")"
+                sed -i '' "s|cover_image: *\"\./\(.*\)\"|cover_image: \"https://pedrocarranza.com/blog-images/$slug/\1\"|g" "$dest/$(basename "$file")"
               else
-                sed -i "s|cover_image: \"\./\(.*\)\"|cover_image: \"https://pedrocarranza.com/blog-images/$slug/\1\"|g" "$dest/$(basename "$file")"
+                sed -i "s|cover_image: *\"\./\(.*\)\"|cover_image: \"https://pedrocarranza.com/blog-images/$slug/\1\"|g" "$dest/$(basename "$file")"
               fi
             fi
           done
+      
+      - name: Wait for GitHub Pages Propagation
+        run: sleep 60
       
       - name: Publish to DEV.to
         uses: sinedied/publish-devto@v2
