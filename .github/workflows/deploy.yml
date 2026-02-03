@@ -48,55 +48,51 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
-      
+          fetch-depth: 0 # Necesario para que la acción sepa qué cambió
+
       - name: Prepare articles for DEV.to
         run: |
+          # 1. Limpieza total de intentos previos
           rm -rf devto_dist
           mkdir -p devto_dist
           
-          # Definimos la base de la URL Raw (asegúrate de que la rama sea master)
           RAW_BASE="https://raw.githubusercontent.com/${{ github.repository }}/master/src/content/blog"
           
+          # 2. Solo buscamos en la carpeta original de Astro, ignorando devto_dist
           find src/content/blog -name "*.md" -type f | while read file; do
-            # 1. Obtener la carpeta donde vive el archivo (el post)
-            # dirname de src/content/blog/mi-post/index.md -> src/content/blog/mi-post
-            # Luego quitamos el prefijo para quedarnos solo con "mi-post"
             folder_path=$(dirname "$file")
             slug=$(basename "$folder_path")
-            filename=$(basename "$file")
-            
-            # Si el archivo está en la raíz de blog (no en carpeta), el slug es el nombre del archivo
-            if [ "$slug" == "blog" ]; then
-                slug="${filename%.*}"
-                FINAL_IMG_URL="$RAW_BASE"
-            else
-                FINAL_IMG_URL="$RAW_BASE/$slug"
-            fi
+            [ "$slug" == "blog" ] && slug=$(basename "$file" .md)
             
             dest_file="devto_dist/${slug}.md"
             cp "$file" "$dest_file"
 
             echo "--- PROCESANDO: $slug ---"
 
-            # 2. FIX IMAGEN: Usamos @ como delimitador en sed para evitar líos con las /
-            # Cambiamos exactamente 'cover_image: ./' por la URL Raw de GitHub
-            sed -i "s@^cover_image: \./@cover_image: ${FINAL_IMG_URL}/@g" "$dest_file"
+            # 3. REEMPLAZO DE IMAGEN (Más robusto)
+            # Buscamos cualquier cosa que empiece por cover_image: y que no sea http
+            # Esto arregla tanto "./imagen.png" como "imagen.png"
+            sed -i "s@^cover_image: \./@cover_image: ${RAW_BASE}/${slug}/@g" "$dest_file"
+            sed -i "s@^cover_image: \([^http]\)@cover_image: ${RAW_BASE}/${slug}/\1@g" "$dest_file"
 
-            # 3. CANONICAL URL
-            CANONICAL="https://draexx.github.io/blog/${slug}/"
-            sed -i "2i canonical_url: ${CANONICAL}" "$dest_file"
+            # 4. CANONICAL URL
+            sed -i "2i canonical_url: https://draexx.github.io/${{ github.event.repository.name }}/blog/${slug}/" "$dest_file"
 
-            # 4. LIMPIEZA
+            # 5. LIMPIEZA DE FRONTMATTER (Astro -> Dev.to)
             sed -i '/^heroImage:/d; /^pubDate:/d; /^author:/d' "$dest_file"
             sed -i '/^tags:/s/\[//g; /^tags:/s/\]//g; /^tags:/s/"//g; /^tags:/s/'\''//g' "$dest_file"
             sed -i '/^title:/s/"//g' "$dest_file"
             sed -i 's/^title: \(.*\)/title: "\1"/' "$dest_file"
-            sed -i 's/^published: .*/published: false/' "$dest_file"
             
-            # DEBUG: Esto nos permitirá ver en el log si la URL es correcta
-            echo "Verificando Frontmatter de $dest_file:"
-            head -n 10 "$dest_file"
+            # Asegurar published: false
+            if grep -q "^published:" "$dest_file"; then
+              sed -i 's/^published: .*/published: false/' "$dest_file"
+            else
+              sed -i "3i published: false" "$dest_file"
+            fi
+            
+            echo "URL Generada para imagen:"
+            grep "cover_image:" "$dest_file"
           done
 
       - name: Publish to DEV.to
@@ -106,3 +102,5 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           files: 'devto_dist/*.md'
           branch: 'master'
+          # ESTO ES CLAVE: Evita que la acción comitee la carpeta devto_dist de vuelta
+          conventional_commits: false
