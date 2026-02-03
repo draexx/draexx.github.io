@@ -27,6 +27,8 @@ const aiGeneratedImages = [
   "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=400&h=250&fit=crop"
 ];
 
+import { Image } from 'astro:assets';
+
 // Traemos todos los posts y los ordenamos por fecha (el más reciente primero)
 const posts = (await getCollection('blog')).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
@@ -36,7 +38,7 @@ const posts = (await getCollection('blog')).sort(
 const latestInsights = posts.slice(0, 3);
 ---
 
-<Layout title="Pedro Carranza - Software Strategist" description="Transformación de sistemas legacy con IA y tecnologías modernas.">
+<Layout title="Pedro Carranza - Estratega de Software y Modernización Legacy" description="Ayudo a empresas a transformar sistemas legacy en activos estratégicos mediante IA y arquitecturas modernas. Moderniza tu infraestructura sin riesgos.">
 
   <Hero />
     <section class="py-10 bg-white relative">
@@ -54,8 +56,8 @@ const latestInsights = posts.slice(0, 3);
             <circle cx="0" cy="0" r="1" fill="#2a99c9" />
             <circle cx="100" cy="100" r="1" fill="#2a99c9" />
         </pattern>
-
-        <mask id="fade-mask">
+        
+ <mask id="fade-mask">
             <rect width="100%" height="100%" fill="url(#fade-grad)" />
             <linearGradient id="fade-grad" x1="1" y1="0" x2="0" y2="0">
             <stop offset="0%" stop-color="white" stop-opacity="1" />
@@ -282,9 +284,11 @@ const latestInsights = posts.slice(0, 3);
                       /* IMPORTANTE: Usamos .src porque ahora heroImage es un objeto.
                         También añadimos un filtro de brillo para que se vea más pro.
                       */
-                      <img 
-                        src={post.data.heroImage.src} 
+                      <Image 
+                        src={post.data.heroImage} 
                         alt={post.data.title} 
+                        width={400}
+                        height={225}
                         class="object-cover w-full h-full group-hover:scale-110 group-hover:brightness-110 transition-all duration-500" 
                       />
                   ) : (

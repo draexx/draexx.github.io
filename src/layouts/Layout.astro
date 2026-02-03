@@ -21,6 +21,7 @@ const socialImageURL = new URL(image, Astro.url);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{title}</title>
     <meta name="description" content={description}>
+    <link rel="canonical" href={canonicalURL} />
 
     <link rel="icon" type="image/svg+xml" href="/icon-brain.svg">
     <meta property="og:type" content="website" />
