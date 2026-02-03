@@ -5,7 +5,7 @@ description: Estrategias no invasivas para transformar bases de datos antiguas e
 tags: 'legacy, ai, microservices'
 cover_image: 'https://raw.githubusercontent.com/draexx/draexx.github.io/master/src/content/blog/inteligencia-de-datos-legacy/portada.png'
 published: false
-id: 3223886
+id: 3223978
 ---
 ## El valor silenciado
 En el mundo del software, solemos tener una obsesión por lo nuevo. Sin embargo, los sistemas antiguos que muchos desprecian no son «basura tecnológica»; son, en realidad, **minas de oro**. Contienen años de comportamiento de clientes, tendencias de mercado y registros históricos que ninguna startup recién fundada posee.

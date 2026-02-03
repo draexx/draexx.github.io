@@ -5,7 +5,7 @@ description: Cómo construir puentes funcionales entre el código antiguo y la a
 tags: 'legacy, ai, architecture'
 cover_image: 'https://raw.githubusercontent.com/draexx/draexx.github.io/master/src/content/blog/de-php-a-la-ia/portada.jpg'
 published: false
-id: 3223883
+id: 3223977
 ---
 
 ## Introducción: El Dilema del Código Antiguo
