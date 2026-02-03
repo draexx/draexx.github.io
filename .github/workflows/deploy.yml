@@ -52,13 +52,11 @@ jobs:
 
       - name: Prepare articles for DEV.to
         run: |
-          # 1. Limpieza total de intentos previos
           rm -rf devto_dist
           mkdir -p devto_dist
           
           RAW_BASE="https://raw.githubusercontent.com/${{ github.repository }}/master/src/content/blog"
           
-          # 2. Solo buscamos en la carpeta original de Astro, ignorando devto_dist
           find src/content/blog -name "*.md" -type f | while read file; do
             folder_path=$(dirname "$file")
             slug=$(basename "$folder_path")
@@ -69,29 +67,35 @@ jobs:
 
             echo "--- PROCESANDO: $slug ---"
 
-            # 3. REEMPLAZO DE IMAGEN (Más robusto)
-            # Buscamos cualquier cosa que empiece por cover_image: y que no sea http
-            # Esto arregla tanto "./imagen.png" como "imagen.png"
-            sed -i "s@^cover_image: \./@cover_image: ${RAW_BASE}/${slug}/@g" "$dest_file"
-            sed -i "s@^cover_image: \([^http]\)@cover_image: ${RAW_BASE}/${slug}/\1@g" "$dest_file"
+            # 1. LIMPIEZA RADICAL DE LA IMAGEN
+            # Primero: Quitar comillas dobles y simples de la línea cover_image
+            sed -i '/^cover_image:/s/"//g' "$dest_file"
+            sed -i "/^cover_image:/s/'//g" "$dest_file"
+            
+            # Segundo: Quitar el ./ si existe
+            sed -i 's|^cover_image: \./|cover_image: |g' "$dest_file"
+            
+            # Tercero: Inyectar la URL de GitHub (ahora que solo queda el nombre del archivo)
+            sed -i "s|^cover_image: |cover_image: ${RAW_BASE}/${slug}/|g" "$dest_file"
 
-            # 4. CANONICAL URL
-            sed -i "2i canonical_url: https://draexx.github.io/${{ github.event.repository.name }}/blog/${slug}/" "$dest_file"
+            # 2. CANONICAL URL
+            # Aseguramos que no tenga comillas tampoco
+            sed -i "2i canonical_url: https://draexx.github.io/draexx.github.io/blog/${slug}/" "$dest_file"
 
-            # 5. LIMPIEZA DE FRONTMATTER (Astro -> Dev.to)
+            # 3. LIMPIEZA DE FRONTMATTER RESTANTE
             sed -i '/^heroImage:/d; /^pubDate:/d; /^author:/d' "$dest_file"
+            
+            # Limpiar tags de corchetes y comillas
             sed -i '/^tags:/s/\[//g; /^tags:/s/\]//g; /^tags:/s/"//g; /^tags:/s/'\''//g' "$dest_file"
+            
+            # Proteger título (quitar comillas y ponerlas limpias)
             sed -i '/^title:/s/"//g' "$dest_file"
             sed -i 's/^title: \(.*\)/title: "\1"/' "$dest_file"
             
-            # Asegurar published: false
-            if grep -q "^published:" "$dest_file"; then
-              sed -i 's/^published: .*/published: false/' "$dest_file"
-            else
-              sed -i "3i published: false" "$dest_file"
-            fi
-            
-            echo "URL Generada para imagen:"
+            # Forzar published: false
+            sed -i 's/^published: .*/published: false/' "$dest_file"
+
+            echo "URL Final de la imagen en $slug:"
             grep "cover_image:" "$dest_file"
           done
 
