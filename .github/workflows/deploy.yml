@@ -52,49 +52,55 @@ jobs:
       
       - name: Prepare articles for DEV.to
         run: |
+          # 1. Limpiar carpeta temporal si existe
+          rm -rf devto_dist
           mkdir -p devto_dist
+          
+          # URL base real de tus archivos en GitHub
           REPO_RAW_URL="https://raw.githubusercontent.com/${{ github.repository }}/master"
           
-          # Buscamos en la carpeta original
+          # 2. Solo procesar archivos dentro de src/content/blog
+          # Usamos -maxdepth para evitar procesar cosas raras
           find src/content/blog -name "*.md" -type f | while read file; do
-            # 1. Obtener la ruta relativa de la CARPETA del post
-            # Esto extrae "de-php-a-la-ia" de "src/content/blog/de-php-a-la-ia/index.md"
+            # Extraer el slug (nombre de la carpeta o del archivo)
+            # Si es index.md, el slug es el nombre de su carpeta padre
             rel_path=$(dirname "${file#src/content/blog/}")
-            
-            # 2. Definir destino (aplanamos la estructura para devto_dist o la mantenemos)
             filename=$(basename "$file")
-            # Si el archivo se llama index.md, le ponemos el nombre de la carpeta para no confundirlos
+            
             if [ "$filename" == "index.md" ]; then
-                new_filename="${rel_path}.md"
+                slug="$rel_path"
             else
-                new_filename="$filename"
+                slug="${filename%.*}"
             fi
             
-            dest_file="devto_dist/$new_filename"
+            dest_file="devto_dist/${slug}.md"
             cp "$file" "$dest_file"
 
-            # 3. CORRECCIÓN DE IMAGEN: Apuntar a la carpeta REAL en el repo
-            # Cambiamos ./ por la ruta absoluta en src/content/blog/
-            IMG_URL="${REPO_RAW_URL}/src/content/blog/${rel_path}"
-            sed -i "s|^cover_image: \./|cover_image: ${IMG_URL}/|g" "$dest_file"
+            echo "Procesando: $slug"
 
-            # 4. Resto de la limpieza (Canónica, Tags, Títulos)
-            slug="${rel_path:-$filename}"
-            slug="${slug%.*}"
-            CANONICAL="https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/blog/${slug}/"
-            
+            # 3. FIX IMAGEN: Apuntar a la carpeta ORIGEN en el repo (src/content/blog/...)
+            # Buscamos la carpeta exacta donde vive la imagen
+            # Si rel_path no está vacío, la ruta es src/content/blog/slug/portada.png
+            FULL_IMG_URL="${REPO_RAW_URL}/src/content/blog/${rel_path}"
+            sed -i "s|^cover_image: \./|cover_image: ${FULL_IMG_URL}/|g" "$dest_file"
+
+            # 4. CANONICAL URL
+            CANONICAL="https://draexx.github.io/blog/${slug}/"
             sed -i "2i canonical_url: ${CANONICAL}" "$dest_file"
+
+            # 5. LIMPIEZA DE FRONTMATTER
             sed -i '/^heroImage:/d; /^pubDate:/d; /^author:/d' "$dest_file"
             sed -i '/^tags:/s/\[//g; /^tags:/s/\]//g; /^tags:/s/"//g; /^tags:/s/'\''//g' "$dest_file"
             sed -i '/^title:/s/"//g' "$dest_file"
             sed -i 's/^title: \(.*\)/title: "\1"/' "$dest_file"
             sed -i 's/^published: .*/published: false/' "$dest_file"
           done
-      
+
       - name: Publish to DEV.to
         uses: sinedied/publish-devto@v2
         with:
           devto_key: ${{ secrets.DEVTO_TOKEN }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          files: 'devto_dist/**/*.md'
+          # IMPORTANTE: Solo archivos .md directos en devto_dist, no subcarpetas
+          files: 'devto_dist/*.md' 
           branch: 'master'
