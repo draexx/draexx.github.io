@@ -5,7 +5,7 @@ description: Una reflexión sobre 25 años de trayectoria tecnológica y por qu�
 tags: 'filosofia, trayectoria, opensource'
 cover_image: 'https://raw.githubusercontent.com/draexx/draexx.github.io/master/src/content/blog/identidad-transgresora/identidad-hacker.png'
 published: false
-id: 3223884
+id: 3223980
 ---
 
 ### // INIT_SYSTEM_LOG
