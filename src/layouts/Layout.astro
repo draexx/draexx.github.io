@@ -3,6 +3,7 @@ import '../styles/global.css';
 import Header from '@components/Header.astro';
 import Footer from '@components/Footer.astro';
 import Konami from '@components/Konami.astro';
+import GoogleTagManager from '@components/GoogleTagManager.astro';
 import { ViewTransitions } from 'astro:transitions'; // Importación nativa de Astro
 
 const { 
@@ -39,8 +40,32 @@ const socialImageURL = new URL(image, Astro.url);
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
 
+    <!-- Schema.org Identity -->
+    <script type="application/ld+json" is:inline>
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Pedro Carranza",
+        "url": "https://pedrocarranza.com",
+        "image": "https://pedrocarranza.com/pedro-profile.jpg",
+        "jobTitle": "Software Strategist",
+        "sameAs": [
+          "https://github.com/draexx",
+          "https://linkedin.com/in/pedrocarranza"
+        ]
+      }
+    </script>
+
+    <!-- Google Tag Manager -->
+    <GoogleTagManager id="GTM-PZZ9D3W5" />
+
     <ViewTransitions /> </head>
 <body class="bg-[#f8fafc] text-slate-900 min-h-screen selection:bg-[#2a99c9] selection:text-white">
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PZZ9D3W5"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    
     <Header />
 
     <main>
