@@ -3,7 +3,10 @@ node_modules/
 
 # Carpeta de salida (Build)
 # Muy importante ignorarla para que GitHub Actions trabaje limpio
+# Carpeta de salida (Build)
+# Muy importante ignorarla para que GitHub Actions trabaje limpio
 dist/
+devto_dist/
 _site/
 
 # Caché y archivos temporales de Astro
