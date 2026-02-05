@@ -109,11 +109,10 @@ jobs:
           done
 
       - name: Publish to DEV.to
-        uses: sinedied/publish-devto@v2
-        with:
-          devto_key: ${{ secrets.DEVTO_TOKEN }}
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          files: 'devto_dist/*.md'
-          branch: 'master'
-          # ESTO ES CLAVE: Evita que la acción comitee la carpeta devto_dist de vuelta
-          conventional_commits: false
+        run: |
+          npx @sinedied/devto-cli@v4 push devto_dist \
+            --token ${{ secrets.DEVTO_TOKEN }} \
+            --branch master \
+            --repo ${{ github.repository }} \
+            --reconcile \
+            --dry-run=false
