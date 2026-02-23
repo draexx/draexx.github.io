@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pedro Carranza | Full Stack Developer & Tech Lead</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;500&family=Inter:wght@300;400;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0d0d0d; 
+            --terminal-green: #00ff41; 
+            --accent-blue: #3498db; 
+            --text-white: #f4f4f4; 
+            --text-gray: #b0b0b0;
+            --font-header: 'Orbitron', sans-serif;
+            --font-code: 'Fira Code', monospace;
+            --font-body: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-gray);
+            font-family: var(--font-body);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container { max-width: 900px; margin: 0 auto; }
+
+        .terminal-window {
+            background: #121212;
+            border-radius: 12px;
+            border: 1px solid #333;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.8);
+            overflow: hidden;
+            border-top: 1px solid #444;
+        }
+
+        .terminal-header {
+            background: #1a1a1a;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            border-bottom: 2px solid #333;
+        }
+
+        .dot { height: 12px; width: 12px; border-radius: 50%; display: inline-block; margin-right: 8px; }
+        .red { background: #ff5f56; }
+        .yellow { background: #ffbd2e; }
+        .green { background: #27c93f; }
+
+        .terminal-title {
+            font-family: var(--font-code);
+            font-size: 0.85em;
+            color: #666;
+            margin-left: 10px;
+        }
+
+        .content { padding: 45px; }
+
+        h1 { 
+            font-family: var(--font-header); 
+            color: var(--text-white); 
+            font-size: 2.8em; 
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .highlight-blue { color: var(--accent-blue); }
+        .highlight-green { color: var(--terminal-green); }
+
+        .command-line {
+            font-family: var(--font-code);
+            margin-bottom: 20px;
+            font-size: 0.9em;
+        }
+
+        .prompt { color: var(--terminal-green); }
+        .command { color: var(--text-white); font-weight: bold; }
+
+        section { margin-bottom: 60px; }
+        
+        .section-tag {
+            font-family: var(--font-code);
+            color: var(--accent-blue);
+            font-size: 0.8em;
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .capabilities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .cap-card {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 25px;
+            border-bottom: 3px solid var(--accent-blue);
+            transition: 0.3s ease;
+        }
+
+        .cap-card:hover {
+            background: rgba(52, 152, 219, 0.05);
+            border-bottom-color: var(--terminal-green);
+        }
+
+        .cap-card h3 {
+            font-family: var(--font-header);
+            color: var(--text-white);
+            font-size: 1em;
+            margin-top: 0;
+        }
+
+        .trace-item {
+            border-left: 1px solid #333;
+            padding-left: 30px;
+            margin-left: 10px;
+            position: relative;
+            padding-bottom: 35px;
+        }
+
+        .trace-item::before {
+            content: "";
+            position: absolute; left: -5px; top: 5px; width: 9px; height: 9px;
+            background: var(--terminal-green);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--terminal-green);
+        }
+
+        .trace-status {
+            font-family: var(--font-code);
+            color: var(--terminal-green);
+            font-size: 0.85em;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .action-area {
+            display: flex; gap: 20px; flex-wrap: wrap; margin-top: 20px;
+        }
+
+        .btn-saeta {
+            background: transparent;
+            border: 1px solid var(--accent-blue);
+            color: var(--accent-blue);
+            padding: 12px 30px;
+            font-family: var(--font-code);
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .btn-saeta:hover {
+            background: var(--accent-blue);
+            color: var(--text-white);
+            box-shadow: 0 0 20px rgba(52, 152, 219, 0.4);
+        }
+
+        footer {
+            text-align: center; padding: 40px 0; font-family: var(--font-code); font-size: 0.75em; opacity: 0.5;
+        }
+
+        @media (max-width: 600px) { h1 { font-size: 1.8em; } .content { padding: 25px; } }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="terminal-window">
+        <div class="terminal-header">
+            <span class="dot red"></span>
+            <span class="dot yellow"></span>
+            <span class="dot green"></span>
+            <span class="terminal-title">FULLSTACK_ACTIVE_SESSION.SYS</span>
+        </div>
+
+        <div class="content">
+            <section id="bio">
+                <span class="section-tag">/ identificación /</span>
+                <div class="command-line">
+                    <span class="prompt">pedrocarranza@saeta:~$</span> <span class="command">whoami --stack</span>
+                </div>
+                <h1>PEDRO <span class="highlight-blue">CARRANZA</span></h1>
+                <p style="font-size: 1.15em; color: var(--text-white); font-weight: 300; margin-top: 15px;">
+                    <strong>Full Stack Developer | Arquitecto de Sistemas | Tech Lead</strong>
+                </p>
+                <p>
+                    Desarrollador con más de 15 años de experiencia técnica. Especialista en construir soluciones de punta a punta, desde arquitecturas backend robustas y APIs de alta disponibilidad hasta interfaces eficientes, siempre respaldadas por una infraestructura industrial sólida.
+                </p>
+            </section>
+
+            <section id="skills">
+                <span class="section-tag">/ stack & capacidades /</span>
+                <div class="command-line">
+                    <span class="prompt">pedrocarranza@saeta:~$</span> <span class="command">ls --development-tools</span>
+                </div>
+                <div class="capabilities-grid">
+                    <div class="cap-card">
+                        <h3>Full Stack Dev</h3>
+                        <p>Desarrollo experto en Node.js, PHP y Java. Diseño de bases de datos relacionales (PostgreSQL) y APIs críticas (QR/ATC).</p>
+                    </div>
+                    <div class="cap-card">
+                        <h3>Infraestructura & IA</h3>
+                        <p>Gestión de servidores y redes a nivel industrial. Aplicación de Data Science y Machine Learning para soluciones inteligentes.</p>
+                    </div>
+                    <div class="cap-card">
+                        <h3>Maker Engineering</h3>
+                        <p>Hardware abierto e IoT. Capacidad única para integrar software de alto nivel con dispositivos electrónicos físicos.</p>
+                    </div>
+                </div>
+            </section>
+
+<section id="trace">
+                <span class="section-tag">/ log de operaciones activas /</span>
+                <div class="command-line">
+                    <span class="prompt">pedrocarranza@saeta:~$</span> <span class="command">tail -f trayectoria.log</span>
+                </div>
+
+                <div class="trace-item">
+                    <span class="trace-status">[SISTEMA ACTIVO]</span><br>
+                    <strong>Liderazgo IT & Infraestructura Crítica</strong>: Responsable de la gestión técnica y administración de sistemas en planta industrial, asegurando la continuidad de operaciones y despliegue de soluciones de facturación masiva.
+                </div>
+
+                <div class="trace-item">
+                    <span class="trace-status">[MODO DOCENTE]</span><br>
+                    <strong>Mentoría en SAETA - TECBA</strong>: Formación de nuevos ingenieros bajo metodologías de planificación docente moderna, vinculando la teoría con la ejecución industrial real.
+                </div>
+
+                <div class="trace-item">
+                    <span class="trace-status">[INNOVACIÓN]</span><br>
+                    <strong>Ecosistema Maker (2021-Presente)</strong>: Fundador de BitsaBots y Geekeando. Desarrollo activo de hardware abierto y divulgación tecnológica.
+                </div>
+
+                <div class="trace-item">
+                    <span class="trace-status">[ROOT_INIT: 2008]</span><br>
+                    Consolidación como referente en administración de sistemas y soporte especializado Nivel 3.
+                </div>
+            </section>
+
+            <div class="action-area">
+                <a href="https://pedrocarranza.com/files/CV-Pedro-Carranza.pdf" class="btn-saeta" target="_blank">> VIEW_FULLSTACK_CV.PDF</a>
+                <a href="https://pedrocarranza.com" class="btn-saeta">> VISIT_LABORATORY</a>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        TECBA 2025 | RUNTIME: <span class="highlight-green">OPTIMIZED</span> | Full Stack Engineering
+    </footer>
+</div>
+
+</body>
+</html>
