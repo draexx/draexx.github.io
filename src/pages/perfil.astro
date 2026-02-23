@@ -59,6 +59,53 @@
 
         .content { padding: 45px; }
 
+        /* --- AJUSTE PARA LA FOTO --- */
+        .bio-container {
+            display: flex;
+            gap: 30px;
+            align-items: flex-start;
+            flex-wrap: wrap; /* Para móviles */
+        }
+
+        .bio-photo {
+            flex: 0 0 180px;
+            position: relative;
+        }
+
+        .bio-photo img {
+            width: 180px;
+            height: 180px;
+            object-fit: cover;
+            border: 2px solid var(--accent-blue);
+            border-radius: 8px;
+            filter: grayscale(30%); /* Efecto profesional */
+            transition: 0.3s ease;
+        }
+
+        .bio-photo:hover img {
+            filter: grayscale(0%);
+            box-shadow: 0 0 20px rgba(52, 152, 219, 0.4);
+        }
+
+        /* Indicador decorativo tipo scanner */
+        .bio-photo::after {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 2px;
+            background: var(--terminal-green);
+            opacity: 0.3;
+            animation: scan 3s infinite linear;
+        }
+
+        @keyframes scan {
+            0% { top: 0; }
+            50% { top: 100%; }
+            100% { top: 0; }
+        }
+
+        .bio-text { flex: 1; min-width: 280px; }
+        /* --------------------------- */
+
         h1 { 
             font-family: var(--font-header); 
             color: var(--text-white); 
@@ -165,7 +212,11 @@
             text-align: center; padding: 40px 0; font-family: var(--font-code); font-size: 0.75em; opacity: 0.5;
         }
 
-        @media (max-width: 600px) { h1 { font-size: 1.8em; } .content { padding: 25px; } }
+        @media (max-width: 600px) { 
+            h1 { font-size: 1.8em; } 
+            .content { padding: 25px; } 
+            .bio-container { justify-content: center; text-align: center; }
+        }
     </style>
 </head>
 <body>
@@ -185,13 +236,22 @@
                 <div class="command-line">
                     <span class="prompt">pedrocarranza@saeta:~$</span> <span class="command">whoami --stack</span>
                 </div>
-                <h1>PEDRO <span class="highlight-blue">CARRANZA</span></h1>
-                <p style="font-size: 1.15em; color: var(--text-white); font-weight: 300; margin-top: 15px;">
-                    <strong>Full Stack Developer | Arquitecto de Sistemas | Tech Lead</strong>
-                </p>
-                <p>
-                    Desarrollador con más de 15 años de experiencia técnica. Especialista en construir soluciones de punta a punta, desde arquitecturas backend robustas y APIs de alta disponibilidad hasta interfaces eficientes, siempre respaldadas por una infraestructura industrial sólida.
-                </p>
+                
+                <div class="bio-container">
+                    <div class="bio-photo">
+                        <img src="images/pedro-profile.png" alt="Pedro Carranza">
+                    </div>
+                    
+                    <div class="bio-text">
+                        <h1>PEDRO <span class="highlight-blue">CARRANZA</span></h1>
+                        <p style="font-size: 1.15em; color: var(--text-white); font-weight: 300; margin-top: 15px;">
+                            <strong>Full Stack Developer | Arquitecto de Sistemas | Tech Lead</strong>
+                        </p>
+                        <p>
+                            Desarrollador con más de 15 años de experiencia técnica. Especialista en construir soluciones de punta a punta, desde arquitecturas backend robustas y APIs de alta disponibilidad hasta interfaces eficientes, siempre respaldadas por una infraestructura industrial sólida.
+                        </p>
+                    </div>
+                </div>
             </section>
 
             <section id="skills">
@@ -215,7 +275,7 @@
                 </div>
             </section>
 
-<section id="trace">
+            <section id="trace">
                 <span class="section-tag">/ log de operaciones activas /</span>
                 <div class="command-line">
                     <span class="prompt">pedrocarranza@saeta:~$</span> <span class="command">tail -f trayectoria.log</span>
