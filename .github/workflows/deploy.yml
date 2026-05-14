@@ -26,6 +26,9 @@ jobs:
           ASTRO_TELEMETRY_DISABLED: 1
       - name: Install dependencies
         run: npm install
+      # npm/cli#4828: optional @rollup/* binaries are sometimes skipped on Linux CI; Rollup then crashes at runtime.
+      - name: Ensure Rollup Linux native module
+        run: npm install --no-save "@rollup/rollup-linux-x64-gnu@$(node -p "require('./node_modules/rollup/package.json').version")"
       - name: Type Check
         run: npm run check
         env:
