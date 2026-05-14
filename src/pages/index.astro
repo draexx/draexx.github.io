@@ -278,7 +278,7 @@ const latestInsights = posts.slice(0, 3);
         <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
           {latestInsights.map((post) => (
               <article class="group cursor-pointer">
-              <a href={`/blog/${post.slug}/`}>
+              <a href={`/blog/${post.id}/`}>
                   <div class="overflow-hidden rounded-xl mb-4 bg-slate-100 aspect-video relative shadow-inner border border-slate-200">
                   {post.data.heroImage ? (
                       /* IMPORTANTE: Usamos .src porque ahora heroImage es un objeto.

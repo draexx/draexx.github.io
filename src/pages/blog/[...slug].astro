@@ -1,5 +1,5 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import Newsletter from '../../components/Newsletter.astro';
 // 1. IMPORTANTE: Importar el componente Image de Astro
@@ -7,8 +7,8 @@ import { Image } from 'astro:assets';
 
 export async function getStaticPaths() {
   const blogEntries = await getCollection('blog');
-  return blogEntries.map(entry => ({
-    params: { slug: entry.slug }, 
+  return blogEntries.map((entry) => ({
+    params: { slug: entry.id },
     props: { entry },
   }));
 }
@@ -17,7 +17,7 @@ const { entry } = Astro.props;
 if (!entry) {
   return Astro.redirect('/404');
 }
-const { Content } = await entry.render();
+const { Content } = await render(entry);
 const { slug } = Astro.params;
 const canonicalURL = new URL(`blog/${slug}`, Astro.site); 
 const socialImageURL = new URL(entry.data.heroImage?.src ?? 'og-default.png', Astro.site);
@@ -45,7 +45,7 @@ const formattedDate = entry.data.pubDate.toLocaleDateString('es-ES', {
 </head>
 <Layout title={`${entry.data.title} | De Bits a Bots`} 
   description={entry.data.description}
-  image={entry.data.heroImage?.src}}>
+  image={entry.data.heroImage?.src}>
   <article class="bg-[#0a1e2b] min-h-screen pb-24 text-white">
     <header class="relative py-24 border-b border-white/10 overflow-hidden">
       <div class="absolute inset-0 opacity-[0.03] pointer-events-none" 

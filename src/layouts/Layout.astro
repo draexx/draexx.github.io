@@ -4,7 +4,7 @@ import Header from '@components/Header.astro';
 import Footer from '@components/Footer.astro';
 import Konami from '@components/Konami.astro';
 import GoogleTagManager from '@components/GoogleTagManager.astro';
-import { ViewTransitions } from 'astro:transitions'; // Importación nativa de Astro
+import { ClientRouter } from 'astro:transitions';
 
 const { 
   title = 'Pedro Carranza | Software, Datos y Automatización',
@@ -59,7 +59,7 @@ const socialImageURL = new URL(image, Astro.url);
     <!-- Google Tag Manager -->
     <GoogleTagManager id="GTM-PZZ9D3W5" />
 
-    <ViewTransitions /> </head>
+    <ClientRouter /> </head>
 <body class="bg-[#f8fafc] text-slate-900 min-h-screen selection:bg-[#2a99c9] selection:text-white">
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PZZ9D3W5"

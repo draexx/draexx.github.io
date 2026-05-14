@@ -4,7 +4,6 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"],
-      "astro:content": ["./.astro/types.d.ts"],
       "@components/*": ["src/components/*"],
       "@data/*": ["src/data/*"],
     }

@@ -39,7 +39,7 @@ const posts = allPosts.sort(
         {posts.length > 0 ? (
           posts.map((post) => (
             <article class="group relative">
-              <a href={`/blog/${post.slug}`} class="block p-6 md:p-8 bg-[#0e3146]/20 border border-white/5 rounded-2xl hover:bg-[#0e3146]/40 hover:border-[#2a99c9]/30 transition-all duration-500">
+              <a href={`/blog/${post.id}`} class="block p-6 md:p-8 bg-[#0e3146]/20 border border-white/5 rounded-2xl hover:bg-[#0e3146]/40 hover:border-[#2a99c9]/30 transition-all duration-500">
                 <div class="flex flex-col md:flex-row gap-8 items-center">
                   
                   {post.data.heroImage && (
