@@ -12,21 +12,23 @@ Sitio web estático (SSG) construido con Astro y Tailwind CSS.
 ## Requisitos
 
 - Node.js 20 (alineado con el workflow de deploy en GitHub Actions)
-- npm
+- pnpm
 
 ## Desarrollo
 
-1. Instalar dependencias: `npm install`
-2. Levantar el servidor local: `npm run dev`
-3. Build de producción: `npm run build`
-4. Previsualizar el build: `npm run preview`
+1. Instalar dependencias: `pnpm install`
+2. Levantar el servidor local: `pnpm run dev`
+3. Build de producción: `pnpm run build`
+4. Previsualizar el build: `pnpm run preview`
+5. Verificación antes de push: `pnpm run verify:ci`
 
 ## Scripts
 
-- `npm run dev`: servidor de desarrollo
-- `npm run check`: verifica tipos (TypeScript)
-- `npm run build`: genera `dist/` (salida estática)
-- `npm run preview`: previsualiza el sitio generado
+- `pnpm run dev`: servidor de desarrollo
+- `pnpm run check`: verifica tipos (TypeScript)
+- `pnpm run build`: genera `dist/` (salida estática)
+- `pnpm run preview`: previsualiza el sitio generado
+- `pnpm run verify:ci`: instala con lockfile congelado + check + build
 
 ## Rutas principales
 

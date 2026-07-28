@@ -1,5 +1,6 @@
 # Dependencias
 node_modules/
+.pnpm-store/
 
 # Carpeta de salida (Build)
 # Muy importante ignorarla para que GitHub Actions trabaje limpio
@@ -19,6 +20,7 @@ Thumbs.db
 
 # Logs de error
 npm-debug.log*
+pnpm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
