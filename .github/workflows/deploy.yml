@@ -37,6 +37,7 @@ jobs:
         run: pnpm run build
         env:
           ASTRO_TELEMETRY_DISABLED: 1
+          PROFILE_GITHUB_TOKEN: ${{ secrets.PROFILE_GITHUB_TOKEN }}
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

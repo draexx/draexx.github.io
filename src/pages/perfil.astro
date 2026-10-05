@@ -1,3 +1,263 @@
+---
+interface GithubRepository {
+    name: string;
+    html_url: string;
+    homepage: string | null;
+    description: string | null;
+    language: string | null;
+    stargazers_count: number;
+    pushed_at: string;
+    topics: string[];
+    fork: boolean;
+    archived: boolean;
+}
+
+interface GithubPinnedRepositoriesResponse {
+    data?: {
+        user?: {
+            pinnedItems?: {
+                nodes: {
+                    name: string;
+                    htmlUrl: string;
+                    homepageUrl: string | null;
+                    description: string | null;
+                    primaryLanguage: { name: string } | null;
+                    stargazerCount: number;
+                    pushedAt: string;
+                    repositoryTopics: { nodes: { topic: { name: string } }[] };
+                    isFork: boolean;
+                    isArchived: boolean;
+                }[];
+            };
+        } | null;
+    };
+    errors?: { message: string }[];
+}
+
+interface GithubContributionDay {
+    contributionCount: number;
+    date: string;
+}
+
+interface GithubContributionWeek {
+    contributionDays: GithubContributionDay[];
+}
+
+interface GithubContributionCalendar {
+    totalContributions: number;
+    weeks: GithubContributionWeek[];
+}
+
+interface GithubContributionsResponse {
+    data?: {
+        user?: {
+            contributionsCollection?: {
+                contributionCalendar: GithubContributionCalendar;
+            };
+        } | null;
+    };
+    errors?: { message: string }[];
+}
+
+const skills = [
+    {
+        title: "Lenguajes",
+        items: ["C++", "GDScript", "HTML", "Java", "JavaScript", "PHP", "PL/pgSQL", "Python", "Shell", "TypeScript", "Wolfram Language"],
+    },
+    {
+        title: "Frameworks & librerías",
+        items: ["Astro", "Next.js", "React", "Node.js", "OpenCV"],
+    },
+    {
+        title: "Datos & hardware",
+        items: ["PostgreSQL", "Arduino", "IoT", "Machine Learning"],
+    },
+];
+
+const skillTreeLines = [
+    "skills/",
+    ...skills.flatMap((group, groupIndex) => {
+        const isLastGroup = groupIndex === skills.length - 1;
+        const groupPrefix = isLastGroup ? "    " : "│   ";
+
+        return [
+            `${isLastGroup ? "└──" : "├──"} ${group.title}/`,
+            ...group.items.map(
+                (skill, skillIndex) =>
+                    `${groupPrefix}${skillIndex === group.items.length - 1 ? "└──" : "├──"} ${skill}`,
+            ),
+        ];
+    }),
+];
+
+const githubUsername = "draexx";
+const githubProfileUrl = `https://github.com/${githubUsername}`;
+const projectConfig: { source: "manual" | "pinned" } = { source: "manual" };
+const featuredProjectNames = [
+    "thesis-tracker",
+    "sistema-evaluacion-api",
+    "qr-generator-app",
+    "vartificial",
+    "batallanaval",
+    "tresenraya",
+];
+let projects: GithubRepository[] = [];
+let projectsError = false;
+let contributionWeeks: GithubContributionWeek[] = [];
+let totalContributions = 0;
+let contributionsError = false;
+
+const githubProfileToken = import.meta.env.PROFILE_GITHUB_TOKEN;
+let contributionsErrorMessage = "No se pudo consultar el calendario de contribuciones en GitHub.";
+
+try {
+    if (!githubProfileToken) {
+        throw new Error("Set PROFILE_GITHUB_TOKEN to load the GitHub contribution calendar.");
+    }
+
+    const response = await fetch("https://api.github.com/graphql", {
+        method: "POST",
+        headers: {
+            Accept: "application/vnd.github+json",
+            Authorization: `Bearer ${githubProfileToken}`,
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            query: `query ContributionCalendar($login: String!) {
+                user(login: $login) {
+                    contributionsCollection {
+                        contributionCalendar {
+                            totalContributions
+                            weeks {
+                                contributionDays {
+                                    contributionCount
+                                    date
+                                }
+                            }
+                        }
+                    }
+                }
+            }`,
+            variables: { login: githubUsername },
+        }),
+    });
+
+    if (!response.ok) {
+        throw new Error(`GitHub GraphQL API returned ${response.status} ${response.statusText}`);
+    }
+
+    const result: GithubContributionsResponse = await response.json();
+    if (result.errors?.length) {
+        throw new Error(`GitHub GraphQL API error: ${result.errors.map(({ message }) => message).join("; ")}`);
+    }
+
+    const calendar = result.data?.user?.contributionsCollection?.contributionCalendar;
+    if (!calendar) {
+        throw new Error(`GitHub did not return a contribution calendar for ${githubUsername}.`);
+    }
+
+    contributionWeeks = calendar.weeks;
+    totalContributions = calendar.totalContributions;
+} catch (error) {
+    console.error("Could not load GitHub contribution calendar for /perfil:", error);
+    contributionsError = true;
+    if (!githubProfileToken) {
+        contributionsErrorMessage =
+            "Falta configurar el secreto PROFILE_GITHUB_TOKEN en GitHub Actions con permiso read:user y volver a desplegar.";
+    }
+}
+
+try {
+    if (projectConfig.source === "pinned") {
+        if (!githubProfileToken) {
+            throw new Error("Set PROFILE_GITHUB_TOKEN to load GitHub pinned repositories.");
+        }
+
+        const response = await fetch("https://api.github.com/graphql", {
+            method: "POST",
+            headers: {
+                Accept: "application/vnd.github+json",
+                Authorization: `Bearer ${githubProfileToken}`,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                query: `query PinnedRepositories($login: String!) {
+                    user(login: $login) {
+                        pinnedItems(first: 6, types: REPOSITORY) {
+                            nodes {
+                                ... on Repository {
+                                    name
+                                    htmlUrl
+                                    homepageUrl
+                                    description
+                                    primaryLanguage { name }
+                                    stargazerCount
+                                    pushedAt
+                                    repositoryTopics(first: 4) { nodes { topic { name } } }
+                                    isFork
+                                    isArchived
+                                }
+                            }
+                        }
+                    }
+                }`,
+                variables: { login: githubUsername },
+            }),
+        });
+
+        if (!response.ok) {
+            throw new Error(`GitHub GraphQL API returned ${response.status} ${response.statusText}`);
+        }
+
+        const result: GithubPinnedRepositoriesResponse = await response.json();
+        if (result.errors?.length) {
+            throw new Error(`GitHub GraphQL API error: ${result.errors.map(({ message }) => message).join("; ")}`);
+        }
+
+        projects = (result.data?.user?.pinnedItems?.nodes ?? []).map((repository) => ({
+            name: repository.name,
+            html_url: repository.htmlUrl,
+            homepage: repository.homepageUrl,
+            description: repository.description,
+            language: repository.primaryLanguage?.name ?? null,
+            stargazers_count: repository.stargazerCount,
+            pushed_at: repository.pushedAt,
+            topics: repository.repositoryTopics.nodes.map(({ topic }) => topic.name),
+            fork: repository.isFork,
+            archived: repository.isArchived,
+        }));
+    } else {
+        const response = await fetch(
+            `https://api.github.com/users/${githubUsername}/repos?type=owner&sort=pushed&per_page=100`,
+            { headers: { Accept: "application/vnd.github+json" } },
+        );
+
+        if (!response.ok) {
+            throw new Error(`GitHub API returned ${response.status} ${response.statusText}`);
+        }
+
+        const repositories: GithubRepository[] = await response.json();
+        const repositoriesByName = new Map(
+            repositories.map((repository) => [repository.name.toLowerCase(), repository]),
+        );
+        const missingProjects = featuredProjectNames.filter(
+            (name) => !repositoriesByName.has(name),
+        );
+
+        if (missingProjects.length > 0) {
+            console.error(`GitHub repositories not found: ${missingProjects.join(", ")}`);
+        }
+
+        projects = featuredProjectNames.flatMap((name) => {
+            const repository = repositoriesByName.get(name);
+            return repository ? [repository] : [];
+        });
+    }
+} catch (error) {
+    console.error("Could not load GitHub projects for /perfil:", error);
+    projectsError = true;
+}
+---
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -7,10 +267,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;500&family=Inter:wght@300;400;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #0d0d0d; 
-            --terminal-green: #00ff41; 
-            --accent-blue: #3498db; 
-            --text-white: #f4f4f4; 
+            --bg-color: #0d0d0d;
+            --terminal-green: #00ff41;
+            --accent-blue: #3498db;
+            --text-white: #f4f4f4;
             --text-gray: #b0b0b0;
             --font-header: 'Orbitron', sans-serif;
             --font-code: 'Fira Code', monospace;
@@ -26,10 +286,19 @@
             padding: 20px;
         }
 
-        .container { max-width: 900px; margin: 0 auto; }
+        .container {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            isolation: isolate;
+            box-sizing: border-box;
+        }
 
         .terminal-window {
-            background: #121212;
+            position: relative;
+            z-index: 1;
+            background: rgba(18, 18, 18, 0.48);
             border-radius: 12px;
             border: 1px solid #333;
             box-shadow: 0 25px 50px rgba(0,0,0,0.8);
@@ -37,7 +306,20 @@
             border-top: 1px solid #444;
         }
 
+        .matrix-canvas {
+            position: absolute;
+            z-index: 0;
+            top: 0;
+            left: 0;
+            width: 100%;
+            opacity: 0.22;
+            pointer-events: none;
+            mask-image: linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent);
+        }
+
         .terminal-header {
+            position: relative;
+            z-index: 1;
             background: #1a1a1a;
             padding: 15px 20px;
             display: flex;
@@ -57,7 +339,11 @@
             margin-left: 10px;
         }
 
-        .content { padding: 45px; }
+        .content {
+            position: relative;
+            z-index: 1;
+            padding: 45px;
+        }
 
         /* --- AJUSTE PARA LA FOTO --- */
         .bio-container {
@@ -106,10 +392,10 @@
         .bio-text { flex: 1; min-width: 280px; }
         /* --------------------------- */
 
-        h1 { 
-            font-family: var(--font-header); 
-            color: var(--text-white); 
-            font-size: 2.8em; 
+        h1 {
+            font-family: var(--font-header);
+            color: var(--text-white);
+            font-size: 2.8em;
             margin: 0;
             text-transform: uppercase;
             letter-spacing: 3px;
@@ -128,7 +414,7 @@
         .command { color: var(--text-white); font-weight: bold; }
 
         section { margin-bottom: 60px; }
-        
+
         .section-tag {
             font-family: var(--font-code);
             color: var(--accent-blue);
@@ -161,6 +447,172 @@
             color: var(--text-white);
             font-size: 1em;
             margin-top: 0;
+        }
+
+        .skill-groups {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .skill-group,
+        .project-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid #292929;
+            border-radius: 8px;
+            padding: 22px;
+        }
+
+        .skill-group h3,
+        .project-card h3 {
+            color: var(--text-white);
+            font-family: var(--font-header);
+            font-size: 0.95em;
+            margin: 0 0 16px;
+        }
+
+        .skill-tags,
+        .project-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .skill-tag,
+        .project-tag {
+            border: 1px solid rgba(52, 152, 219, 0.35);
+            border-radius: 999px;
+            color: #c9e8fa;
+            font-family: var(--font-code);
+            font-size: 0.75em;
+            padding: 5px 10px;
+        }
+
+        .skills-tree {
+            overflow-x: auto;
+            margin: 0;
+            padding: 22px;
+            border: 1px solid #292929;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--terminal-green);
+            font-family: var(--font-code);
+            font-size: 0.9em;
+            line-height: 1.9;
+        }
+
+        .skills-tree span {
+            display: block;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 18px;
+        }
+
+        .project-card {
+            display: flex;
+            flex-direction: column;
+            min-height: 210px;
+            transition: border-color 0.3s ease, background 0.3s ease;
+        }
+
+        .project-card:hover {
+            background: rgba(52, 152, 219, 0.05);
+            border-color: var(--accent-blue);
+        }
+
+        .project-card h3 a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .project-card h3 a:hover {
+            color: var(--terminal-green);
+        }
+
+        .project-card p {
+            flex: 1;
+            margin: 0 0 18px;
+        }
+
+        .project-card .project-meta {
+            align-items: center;
+            color: var(--text-gray);
+            font-family: var(--font-code);
+            font-size: 0.75em;
+            margin-bottom: 14px;
+        }
+
+        .project-link {
+            color: var(--accent-blue);
+            font-family: var(--font-code);
+            font-size: 0.8em;
+            margin-top: 16px;
+            text-decoration: none;
+        }
+
+        .project-link:hover {
+            color: var(--terminal-green);
+        }
+
+        .projects-message {
+            border-left: 2px solid var(--accent-blue);
+            padding: 10px 16px;
+        }
+
+        .contributions-summary {
+            color: var(--text-white);
+            font-family: var(--font-code);
+            margin-bottom: 16px;
+        }
+
+        .contributions-scroll {
+            overflow-x: auto;
+            padding: 18px;
+            border: 1px solid #292929;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .contributions-calendar {
+            display: flex;
+            gap: 4px;
+            width: max-content;
+        }
+
+        .contribution-week {
+            display: grid;
+            grid-template-rows: repeat(7, 12px);
+            gap: 4px;
+        }
+
+        .contribution-day {
+            width: 12px;
+            height: 12px;
+            border-radius: 2px;
+            background: #202820;
+        }
+
+        .contribution-day[data-level="1"] { background: #0e4429; }
+        .contribution-day[data-level="2"] { background: #006d32; }
+        .contribution-day[data-level="3"] { background: #26a641; }
+        .contribution-day[data-level="4"] { background: #39d353; }
+
+        .contributions-legend {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 5px;
+            margin-top: 12px;
+            color: var(--text-gray);
+            font-family: var(--font-code);
+            font-size: 0.75em;
+        }
+
+        .contributions-legend .contribution-day {
+            display: inline-block;
         }
 
         .trace-item {
@@ -209,18 +661,25 @@
         }
 
         footer {
+            position: relative;
+            z-index: 1;
             text-align: center; padding: 40px 0; font-family: var(--font-code); font-size: 0.75em; opacity: 0.5;
         }
 
-        @media (max-width: 600px) { 
-            h1 { font-size: 1.8em; } 
-            .content { padding: 25px; } 
+        @media (max-width: 600px) {
+            h1 { font-size: 1.8em; }
+            .content { padding: 25px; }
             .bio-container { justify-content: center; text-align: center; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .matrix-canvas { display: none; }
         }
     </style>
 </head>
 <body>
 
+<canvas class="matrix-canvas" aria-hidden="true"></canvas>
 <div class="container">
     <div class="terminal-window">
         <div class="terminal-header">
@@ -236,12 +695,12 @@
                 <div class="command-line">
                     <span class="prompt">pedrocarranza@saeta:~$</span> <span class="command">whoami --stack</span>
                 </div>
-                
+
                 <div class="bio-container">
                     <div class="bio-photo">
                         <img src="../images/pedro-profile.png" alt="Pedro Carranza">
                     </div>
-                    
+
                     <div class="bio-text">
                         <h1>PEDRO <span class="highlight-blue">CARRANZA</span></h1>
                         <p style="font-size: 1.15em; color: var(--text-white); font-weight: 300; margin-top: 15px;">
@@ -254,7 +713,7 @@
                 </div>
             </section>
 
-            <section id="skills">
+            <section id="development-tools">
                 <span class="section-tag">/ stack & capacidades /</span>
                 <div class="command-line">
                     <span class="prompt">pedrocarranza@saeta:~$</span> <span class="command">ls --development-tools</span>
@@ -265,14 +724,22 @@
                         <p>Desarrollo experto en Node.js, PHP y Java. Diseño de bases de datos relacionales (PostgreSQL) y APIs críticas (QR/ATC).</p>
                     </div>
                     <div class="cap-card">
-                          <h3>IA & Data Science</h3>
-                          <p>Maestrando en IA. Aplicación de Machine Learning para optimización de procesos y análisis predictivo de datos.</p>
+                            <h3>IA & Data Science</h3>
+                            <p>Maestrando en IA. Aplicación de Machine Learning para optimización de procesos y análisis predictivo de datos.</p>
                     </div>
                     <div class="cap-card">
                         <h3>Maker Engineering</h3>
                         <p>Hardware abierto e IoT. Capacidad única para integrar software de alto nivel con dispositivos electrónicos físicos.</p>
                     </div>
                 </div>
+            </section>
+
+            <section id="skills">
+                <span class="section-tag">/ skills /</span>
+                <div class="command-line">
+                    <span class="prompt">pedrocarranza@saeta:~$</span> <span class="command">tree skills/</span>
+                </div>
+                <pre class="skills-tree" aria-label="Skills en formato de árbol de consola"><code>{skillTreeLines.map((line) => <span>{line}</span>)}</code></pre>
             </section>
 
             <section id="trace">
@@ -302,6 +769,98 @@
                 </div>
             </section>
 
+            <section id="projects">
+                <span class="section-tag">/ proyectos open source /</span>
+                <div class="command-line">
+                    <span class="prompt">pedrocarranza@saeta:~$</span> <span class="command">{projectConfig.source === "pinned" ? "gh api graphql --field pinnedItems" : "gh repo list draexx --featured"}</span>
+                </div>
+
+                {projectsError ? (
+                    <p class="projects-message">
+                        No se pudieron cargar los proyectos desde GitHub en este momento.
+                        <a class="project-link" href={githubProfileUrl} target="_blank" rel="noopener noreferrer">Ver perfil en GitHub</a>
+                    </p>
+                ) : projects.length > 0 ? (
+                    <div class="projects-grid">
+                        {projects.map((project) => (
+                            <article class="project-card">
+                                <h3><a href={project.homepage?.startsWith("https://") ? project.homepage : project.html_url} target="_blank" rel="noopener noreferrer">{project.name}</a></h3>
+                                <p>{project.description || "Proyecto público de código abierto."}</p>
+                                <div class="project-meta">
+                                    {project.language && <span>{project.language}</span>}
+                                    <span>Actualizado {new Date(project.pushed_at).toLocaleDateString("es-BO", { year: "numeric", month: "short" })}</span>
+                                    <span>★ {project.stargazers_count}</span>
+                                </div>
+                                {project.topics.length > 0 && (
+                                    <div class="project-meta">
+                                        {project.topics.slice(0, 4).map((topic) => <span class="project-tag">#{topic}</span>)}
+                                    </div>
+                                )}
+                                <a class="project-link" href={project.html_url} target="_blank" rel="noopener noreferrer">Ver repositorio →</a>
+                            </article>
+                        ))}
+                    </div>
+                ) : (
+                    <p class="projects-message">No hay proyectos públicos para mostrar. <a class="project-link" href={githubProfileUrl}>Ver perfil en GitHub</a></p>
+                )}
+            </section>
+
+                        <section id="contributions">
+                <span class="section-tag">/ actividad en github /</span>
+                <div class="command-line">
+                    <span class="prompt">pedrocarranza@saeta:~$</span> <span class="command">gh api graphql --field contributionsCollection</span>
+                </div>
+
+                {contributionsError ? (
+                    <p class="projects-message">
+                        {contributionsErrorMessage}
+                        <a class="project-link" href={`${githubProfileUrl}/graphs/contributors`} target="_blank" rel="noopener noreferrer">Ver actividad en GitHub</a>
+                    </p>
+                ) : (
+                    <>
+                        <p class="contributions-summary">{totalContributions.toLocaleString("es-BO")} contribuciones en el último año</p>
+                        <div class="contributions-scroll" role="img" aria-label={`Calendario de ${totalContributions} contribuciones de GitHub durante el último año`}>
+                            <div class="contributions-calendar">
+                                {contributionWeeks.map((week) => (
+                                    <div class="contribution-week">
+                                        {week.contributionDays.map((day) => {
+                                            const level = day.contributionCount === 0
+                                                ? 0
+                                                : day.contributionCount < 2
+                                                    ? 1
+                                                    : day.contributionCount < 5
+                                                        ? 2
+                                                        : day.contributionCount < 10
+                                                            ? 3
+                                                            : 4;
+                                            const date = new Date(`${day.date}T00:00:00Z`).toLocaleDateString("es-BO", {
+                                                year: "numeric",
+                                                month: "long",
+                                                day: "numeric",
+                                                timeZone: "UTC",
+                                            });
+
+                                            return (
+                                                <span
+                                                    class="contribution-day"
+                                                    data-level={level}
+                                                    title={`${day.contributionCount} contribuciones · ${date}`}
+                                                />
+                                            );
+                                        })}
+                                    </div>
+                                ))}
+                            </div>
+                            <div class="contributions-legend" aria-hidden="true">
+                                <span>Menos</span>
+                                {[0, 1, 2, 3, 4].map((level) => <span class="contribution-day" data-level={level} />)}
+                                <span>Más</span>
+                            </div>
+                        </div>
+                    </>
+                )}
+            </section>
+
             <div class="action-area">
                 <a href="https://pedrocarranza.com/files/CV-Pedro-Carranza.pdf" class="btn-saeta" target="_blank">> VIEW_FULLSTACK_CV.PDF</a>
                 <a href="https://pedrocarranza.com" class="btn-saeta">> VISIT_LABORATORY</a>
@@ -310,9 +869,75 @@
     </div>
 
     <footer>
-        TECBA 2025 | RUNTIME: <span class="highlight-green">OPTIMIZED</span> | Full Stack Engineering
+        TECBA 2026 | RUNTIME: <span class="highlight-green">OPTIMIZED</span> | Full Stack Engineering
     </footer>
 </div>
+
+<script>
+    const matrixCanvas = document.querySelector<HTMLCanvasElement>(".matrix-canvas");
+    const matrixContainer = matrixCanvas?.parentElement;
+    const matrixContext = matrixCanvas?.getContext("2d");
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    if (matrixCanvas && matrixContainer && matrixContext && !reducedMotion.matches) {
+        const glyphs = "01アイウエオカキクケコサシスセソタチツテト";
+        const fontSize = 14;
+        let drops: number[] = [];
+        let animationFrame = 0;
+
+        const resizeCanvas = () => {
+            matrixCanvas.style.width = `${matrixContainer.clientWidth}px`;
+            matrixCanvas.style.height = `${matrixContainer.scrollHeight}px`;
+            const bounds = matrixCanvas.getBoundingClientRect();
+            const pixelRatio = Math.min(window.devicePixelRatio || 1, 1.5);
+            matrixCanvas.width = Math.floor(bounds.width * pixelRatio);
+            matrixCanvas.height = Math.floor(bounds.height * pixelRatio);
+            matrixContext.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+            drops = Array.from(
+                { length: Math.ceil(bounds.width / fontSize) },
+                () => Math.random() * (bounds.height / fontSize),
+            );
+            matrixContext.clearRect(0, 0, bounds.width, bounds.height);
+        };
+
+        const drawMatrix = () => {
+            const bounds = matrixCanvas.getBoundingClientRect();
+            matrixContext.fillStyle = "rgba(13, 13, 13, 0.08)";
+            matrixContext.fillRect(0, 0, bounds.width, bounds.height);
+            matrixContext.font = `${fontSize}px monospace`;
+
+            drops.forEach((drop, column) => {
+                const glyph = glyphs[Math.floor(Math.random() * glyphs.length)];
+                matrixContext.fillStyle = Math.random() > 0.97 ? "#caffd5" : "#00ff41";
+                matrixContext.fillText(glyph, column * fontSize, drop * fontSize);
+                drops[column] = drop * fontSize > bounds.height && Math.random() > 0.975
+                    ? 0
+                    : drop + 0.45;
+            });
+
+            animationFrame = window.requestAnimationFrame(drawMatrix);
+        };
+
+        const stopMatrix = () => {
+            window.cancelAnimationFrame(animationFrame);
+            matrixContext.clearRect(0, 0, matrixCanvas.width, matrixCanvas.height);
+        };
+
+        resizeCanvas();
+        drawMatrix();
+        const resizeObserver = new ResizeObserver(resizeCanvas);
+        resizeObserver.observe(matrixContainer);
+        window.addEventListener("resize", resizeCanvas);
+        reducedMotion.addEventListener("change", (event) => {
+            if (event.matches) {
+                stopMatrix();
+            } else {
+                resizeCanvas();
+                drawMatrix();
+            }
+        });
+    }
+</script>
 
 </body>
 </html>
