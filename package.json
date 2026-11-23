@@ -13,18 +13,21 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/check": "^0.9.10",
+    "@astrojs/check": "^0.9.12",
     "@astrojs/rss": "^4.0.19",
-    "@astrojs/sitemap": "^3.7.3",
-    "astro": "^7.4.7",
+    "@astrojs/sitemap": "^3.7.6",
+    "astro": "^7.4.13",
     "sharp": "^0.35.5",
     "typescript": "^6.0.3",
-    "zod": "^4.6.6"
+    "zod": "^4.6.7"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4.3.0",
-    "postcss": "^8.5.26",
-    "tailwindcss": "^4.3.0"
+    "@tailwindcss/postcss": "^4.3.5",
+    "postcss": "^8.5.33",
+    "tailwindcss": "^4.3.5"
   },
-  "packageManager": "pnpm@12.9.1+sha512.06b055fff5cd20dc12781de173ced3310ce0951bf2ec620211a16045d5444d5c93a663210764ef29a653a610459ba0368f0e74f84d80c54723cf95aae7bc0d6d"
+  "engines": {
+    "node": ">=22.23.4"
+  },
+  "packageManager": "pnpm@12.21.0"
 }
